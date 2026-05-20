@@ -1,0 +1,27 @@
+# Python缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 跑回测产生的中间文件
+*.txt
+*.png
+*.parquet
+*.csv
+
+# 但保留README
+!README.md
+
+# 编辑器临时文件
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# 大数据文件 (永远不传到github)
+*.h5
+*.pkl
+
+# 跑结果目录
+results/
+logs/
