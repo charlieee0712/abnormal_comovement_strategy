@@ -38,9 +38,18 @@
 | `event_study.py` | 含 `PERIODS`（4 段定义）、`get_base_pool(data)` | 稳定 |
 | `pool_screening_v2.py` | 含 I11 信号定义、硬约束、各因子计算函数、中性化 | 稳定 |
 | `comprehensive_factor_diagnosis.py` | **当前主力诊断脚本**（Event Study + Calendar PnL）| 见 §5，最新版刚改完待跑 |
-| `sharpe_credibility_diagnosis.py` | 早期 Sharpe 可信度三诊断 | 历史，结论已并入认知 |
-| `single_factor_groups.py` | 早期单因子分组（用了**错误的** sqrt(252) 年化）| 废弃，勿用其 Sharpe |
-| `full_a_single_factor.py` | 全A 单因子测试（验证 cmf 全市场反向）| 历史 |
+| `export_factors_to_library.py` | 把 I11 信号 + 4 因子按领导格式导出到公共因子库（3 列长表） | 活跃·交付工具（P3 用） |
+| `engine.py` | 因子回测引擎,实现领导 PnL 公式（VWAP 旧/新仓位）;纯函数库,当前被 0 处 import | 保留·领导 PnL 公式参照（被 0 处 import,不在现行链路）。⚠️ PnL 除数口径“有条件正确”:喂归一化权重才对;用其自带 factor_to_weight 默认助手会除以全市场（约5000）,即 /5000 bug 形态。复用作参照时必须喂归一化权重,不要走默认路径。 |
+| `factor_marginal_diagnosis.py` | 因子相关性矩阵 + leave-one-out 边际贡献回测（建在旧 score_pool 合成框架上） | 历史脚本,但 leave-one-out 边际贡献逻辑当下就相关（确立每因子真实价值）;复用时换双向剔尾口径。留着,优先级不低 |
+| `factor_ic_diagnosis.py` | I11 池内因子 IC 参数扫描（找每因子最优窗口） | 历史·参数已固化进 pool_v2;若做“滚动 IC 降权”增强可复用 |
+| `full_a_single_factor.py` | 全A 单因子分组测试（跳过 I11 预筛选） | 重要证据·证明 cmf 在全市场反向（非 I11 池选择效应）,支撑 cmf 反向用法 |
+| `single_factor_groups.py` | 单因子 2/3/5 分组（I11 池内,看头/尾区分度） | 废弃·错误 √252 年化口径的“案发现场”（勿用其 Sharpe） |
+| `sharpe_credibility_diagnosis.py` | 单因子 Sharpe 可信度 3 合 1 诊断（对齐/扣成本/跨段衰减） | 历史·诊断并确立 √(252/5) 修复的证据 |
+| `i11_calendar_pnl.py` | I11 日历时间 PnL（回应领导反馈2:拉到时间轴看暴露） | 历史·Phase1 信号验证证据（领导问信号是否过拟合可直接跑,留原地） |
+| `i11_cross_validation.py` | I11 信号交叉验证（v2a/v2b/v2c 变种对比） | 历史·Phase1 信号验证证据（同上,留原地） |
+| `i11_final.py` | I11 最终确认（final_min 等极简变种） | 历史·Phase1 信号验证证据（同上,留原地） |
+| `i11_risk_adjusted.py` | I11 风险调整评估 Phase1.7（Sharpe/Calmar/IR） | 历史·Phase1 信号验证证据（同上,留原地） |
+| `i11_sensitivity.py` | I11 参数敏感性 & 消融（验证非过拟合） | 历史·Phase1 信号验证证据（同上,留原地） |
 
 **4 段定义（PERIODS）**：2010-2014 / 2015-2018 / 2019-2023 / 2024-2026。**重点永远看 2024-2026**（最难、最接近实盘的样本外）。
 
