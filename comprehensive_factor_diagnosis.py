@@ -894,15 +894,15 @@ def cross_period_summary(all_results, output_dir, factor_specs):
         print(f"  {fac:<22s} " + "  ".join(cells) + f"  {avg:>+8.2f}")
     
     # Calendar PnL Sharpe
-    print(f"\n--- Calendar PnL Sharpe (规则筛选后, Net) ---")
+    print(f"\n--- Calendar PnL Sharpe (规则筛选后, NW 保守口径) ---")
     print(f"  {'因子':<22s} " + "  ".join(f"{p:>10s}" for p in periods) + f"  {'均值':>8s}")
     for fac in fac_names:
         vals = []; cells = []
         for p in periods:
             m = all_results.get(p, {}).get(fac, {}).get('calendar_net')
             if m:
-                vals.append(m['sharpe'])
-                cells.append(f"{m['sharpe']:>+10.2f}")
+                vals.append(m['sharpe_nw'])
+                cells.append(f"{m['sharpe_nw']:>+10.2f}")
             else:
                 cells.append(f"{'N/A':>10s}")
         avg = np.mean(vals) if vals else 0
