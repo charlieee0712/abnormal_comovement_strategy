@@ -87,6 +87,29 @@ def setup_dual_logging(output_dir, log_name='log.txt'):
 # 因子注册表 (扩展时只需在这里加)
 # ============================================================
 
+CONFIRMED_FEATURE_NAMES = [
+    # 原14 (微观结构等)
+    'CCV_20d', 'info_discreteness_20d', 'CLV_20d', 'CVR_20d', 'drawdown_volume_ratio',
+    'tug_of_war_20d', 'shadow_asymmetry_20d', 'conditional_turnover', 'RPV_20d', 'ou_halflife_60d',
+    'stealth_score', 'amihud_asymmetry_20d', 'realized_skewness_20d', 'gap_survival_ratio',
+    # vol类5
+    'realized_vol_20d', 'vol_ratio_5d_20d', 'realized_kurtosis_20d', 'turnover_volatility_60d',
+    'max_abs_return_10d',
+    # 反转/动量11
+    'cum_return_5d', 'cum_return_10d', 'cum_return_20d', 'distance_from_high_20d', 'days_since_high',
+    'recent_high_20d', 'cum_intraday_ret_5d', 'cum_intraday_ret_10d', 'cum_intraday_ret_20d',
+    'overnight_return_ratio_20d', 'overnight_ret_surprise',
+]  # 30个, 已核对 features_daily.keys() 30/30 精确匹配 (2026-06-04)
+
+
+def make_feature_func(feat_name):
+    """features_daily 里已算好的因子, 直接从 features dict 取值.
+    不预设方向 -- 双向剔尾 + 2/3/5 扫描让数据决定 (PROJECT_STATUS §4.4)."""
+    def _f(data, features, industry):
+        return features[feat_name]
+    return _f
+
+
 def get_default_factor_specs():
     """
     返回 4 个原有因子的 spec.
@@ -98,7 +121,7 @@ def get_default_factor_specs():
       direction: 'positive' (因子大=好) / 'negative' (因子大=差, 已乘负号)
       neutralize_industry: 是否需要行业中性 (reversal 已在 compute 内做)
     """
-    return [
+    specs = [
         {
             'name': 'reversal_skip1',
             'func': lambda data, features, industry: compute_reversal_skip1(data['close'], industry, window=10),
@@ -130,6 +153,18 @@ def get_default_factor_specs():
             'direction': 'positive',  # 已经乘了负号, 现在是正向
         },
     ]
+
+    # 追加 30 个 features_daily 候选 (拼写已核对 30/30, 2026-06-04).
+    # 双向剔尾 + 2/3/5 分组扫描自动定方向与分组, n_groups/drop_groups 仅占位.
+    for feat_name in CONFIRMED_FEATURE_NAMES:
+        specs.append({
+            'name': feat_name,
+            'func': make_feature_func(feat_name),
+            'n_groups': 5,        # 占位, 2/3/5 扫描覆盖
+            'drop_groups': [1],   # 占位, 双向剔尾覆盖
+            'direction': 'unknown',
+        })
+    return specs
 
 
 # ============================================================
@@ -623,6 +658,74 @@ def plot_calendar_pnl(metrics_gross, metrics_net, factor_name, period_name, outp
 # 单段全因子诊断
 # ============================================================
 
+def compute_factor_correlation_matrix(all_neu_caches, filtered_pool, factor_names):
+    """
+    NxN 因子相关性矩阵: 每个交易日在 I11 池内算一次截面 Spearman 相关
+    (= 中性化值 rank 后 Pearson), 再对所有交易日取均值.
+    输入用各因子中性化后的值 (precompute_neutralized_factor 输出).
+
+    向量化: 每天把所有因子的池内值拼成一个 DataFrame, df.rank().corr() 一次出当日全矩阵,
+    绝不因子两两逐日循环.
+    """
+    mat_sum = None
+    cnt_mat = None
+    all_dates = set()
+    for fac in factor_names:
+        all_dates.update(all_neu_caches.get(fac, {}).keys())
+    all_dates = sorted(all_dates)
+
+    for date_idx in all_dates:
+        cols = {}
+        for fac in factor_names:
+            s = all_neu_caches.get(fac, {}).get(date_idx)
+            if s is not None:
+                cols[fac] = s
+        if len(cols) < 2:
+            continue
+        df = pd.DataFrame(cols)                       # index=池内股票(并集), columns=因子
+        r = df.rank().corr().reindex(index=factor_names, columns=factor_names)
+        if mat_sum is None:
+            mat_sum = r.fillna(0).values.copy()
+            cnt_mat = (~r.isna()).astype(int).values.copy()
+        else:
+            mat_sum = mat_sum + r.fillna(0).values
+            cnt_mat = cnt_mat + (~r.isna()).astype(int).values
+
+    if mat_sum is None:
+        return pd.DataFrame(np.nan, index=factor_names, columns=factor_names)
+
+    # ★ 必须用 out= 给可写数组, 否则 np.divide(where=) 返回只读数组会报错
+    corr_mean = np.full_like(mat_sum, np.nan, dtype=float)
+    np.divide(mat_sum, cnt_mat, out=corr_mean, where=cnt_mat > 0)
+    return pd.DataFrame(corr_mean, index=factor_names, columns=factor_names)
+
+
+def plot_correlation_heatmap(corr_mat, period_name, output_dir):
+    """相关性矩阵热力图 (可选, 失败不影响主流程)."""
+    try:
+        import matplotlib
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt
+        import warnings; warnings.filterwarnings('ignore')
+    except ImportError:
+        return None
+    n = corr_mat.shape[0]
+    if n == 0:
+        return None
+    fig, ax = plt.subplots(figsize=(max(8, n * 0.45), max(7, n * 0.42)))
+    im = ax.imshow(corr_mat.values.astype(float), vmin=-1, vmax=1, cmap='RdBu_r', aspect='auto')
+    ax.set_xticks(range(n)); ax.set_yticks(range(n))
+    ax.set_xticklabels(list(corr_mat.columns), rotation=90, fontsize=6)
+    ax.set_yticklabels(list(corr_mat.index), fontsize=6)
+    ax.set_title('Factor cross-sectional rank corr (time-avg) | %s' % period_name)
+    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    plt.tight_layout()
+    save_path = os.path.join(output_dir, 'correlation_matrix_%s.png' % period_name.replace('-', '_'))
+    plt.savefig(save_path, dpi=110, bbox_inches='tight')
+    plt.close()
+    return save_path
+
+
 def analyze_period(period_name, start, end, factor_specs, output_dir):
     print(f"\n{'#'*90}")
     print(f"  综合诊断: {period_name}")
@@ -649,6 +752,7 @@ def analyze_period(period_name, start, end, factor_specs, output_dir):
         industry = industry.reindex(index=data['close'].index, columns=data['close'].columns)
     
     period_results = {}
+    all_neu_caches = {}   # 收集各因子中性化 neu_cache, 供相关性矩阵
     for fac_spec in factor_specs:
         fac_name = fac_spec['name']
         print(f"\n  --- {fac_name} (n_groups={fac_spec['n_groups']}, drop={fac_spec['drop_groups']}) ---")
@@ -664,6 +768,7 @@ def analyze_period(period_name, start, end, factor_specs, output_dir):
         print(f"    [precompute] 中性化 + 缓存...")
         neu_cache = precompute_neutralized_factor(factor_df, filtered, log_mcap)
         print(f"    [precompute] 缓存了 {len(neu_cache)} 个交易日的中性化因子值")
+        all_neu_caches[fac_name] = neu_cache   # ★ 存下来供相关性矩阵
         
         # 视图 A: Event Study (跑 2/3/5 分组, 复用 cache)
         event_results = {}
@@ -741,6 +846,23 @@ def analyze_period(period_name, start, end, factor_specs, output_dir):
             import traceback; traceback.print_exc()
             period_results[fac_name] = {'event_study': event_results}
     
+    # ============================================================
+    # 因子相关性矩阵: 本段所有因子中性化值的截面 rank 相关 (时序均值)
+    # ============================================================
+    fac_names_corr = [s['name'] for s in factor_specs if s['name'] in all_neu_caches]
+    print(f"\n[相关性矩阵] {len(fac_names_corr)} 因子, 计算截面 rank 相关 (时序均值)...")
+    try:
+        corr_mat = compute_factor_correlation_matrix(all_neu_caches, filtered, fac_names_corr)
+        corr_csv = os.path.join(output_dir, 'correlation_matrix_%s.csv' % period_name.replace('-', '_'))
+        corr_mat.to_csv(corr_csv, encoding='utf-8-sig')
+        print(f"  [csv] {corr_csv}  ({corr_mat.shape[0]}x{corr_mat.shape[1]})")
+        hp = plot_correlation_heatmap(corr_mat, period_name, output_dir)
+        if hp:
+            print(f"  [plot] {hp}")
+    except Exception as e:
+        print(f"  [ERROR] 相关性矩阵失败: {e}")
+        import traceback; traceback.print_exc()
+
     return period_results
 
 
@@ -861,6 +983,8 @@ def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--period', default='all', help='all 或具体段名')
+    parser.add_argument('--factors', default='all',
+                        help="all 或逗号分隔因子名 (子集验证, 如 'reversal_skip1,cum_return_20d')")
     parser.add_argument('--cost_bp', type=float, default=6.0,
                         help='双边成本 bp (默认6, 可调; 实盘中低频参考10-15)')
     args = parser.parse_args()
@@ -876,6 +1000,15 @@ def main():
     print(f"{'★'*90}")
     
     factor_specs = get_default_factor_specs()
+    if args.factors != 'all':
+        want = [x.strip() for x in args.factors.split(',') if x.strip()]
+        known = {s['name'] for s in factor_specs}
+        missing = [w for w in want if w not in known]
+        if missing:
+            print(f"[WARN] --factors 里这些名字不在 specs, 忽略: {missing}")
+        factor_specs = [s for s in factor_specs if s['name'] in want]
+        if not factor_specs:
+            print("[ERROR] --factors 过滤后无因子可跑"); return
     print(f"\n因子数: {len(factor_specs)}")
     for s in factor_specs:
         print(f"  - {s['name']} (n_groups={s['n_groups']}, drop={s['drop_groups']})")
