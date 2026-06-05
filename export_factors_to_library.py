@@ -28,6 +28,14 @@
 import sys, os, numpy as np, pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+# 关键: 把data_loader的缓存目录改成用户有权限的位置
+# (公共目录 /mnt/big/base/public/FundamentalTL/cache/ 可能没写权限)
+import data_loader
+USER_CACHE_DIR = '/mnt/sda2/lichenchen/data/cache/'
+os.makedirs(USER_CACHE_DIR, exist_ok=True)
+data_loader.PATHS['cache_dir'] = USER_CACHE_DIR
+print(f"[setup] cache_dir overridden to: {USER_CACHE_DIR}")
+
 from data_loader import load_all_daily_data
 from features_daily import calc_all_daily_features
 from event_study import get_base_pool, PERIODS
