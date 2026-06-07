@@ -171,17 +171,33 @@ def base_shape(s):
 
 
 def pool_suggestion(shapes):
-    """shapes: dict period->shape. 近段(2019/2024)权重高, 远段供参考."""
-    near = [shapes.get(p) for p in NEAR]
-    if any(s is None for s in near):
+    """重做版(2026段n约为2023的0.4倍, 噪声大, 不一票否决):
+    形状定性以可信的 2023 段为主, 2026 仅作验证。shapes: dict period->shape, 看全4段。
+    - 合成池:     2014/2018/2023 都单调(强或weak)同向, 且 2026 仍是同向单调(强或weak)
+                  (2026 只是 R²低=同向噪声 → 放行; single_tail/倒U 等形状变化 → 不放行)。
+    - 规则池:     2023 与 2026 都 single_tail 且同侧(严格, 不放宽2026)。
+    - 距离化候选: 可信的 2023 段是 inverted_U 才算真倒U候选; 仅 2026 倒U 按噪声不算。
+    - 否则:       人工复核。
+    返回 (建议, 是否已定池)。"""
+    s23, s26 = shapes.get('2019-2023'), shapes.get('2024-2026')
+    if s23 is None or s26 is None:
         return '人工复核(近段样本不足)', False
-    b = [base_shape(s) for s in near]
-    if b[0][0] == 'mono' and b[1][0] == 'mono' and b[0][1] == b[1][1]:
-        return '合成池(单调%s)' % ('升' if b[0][1] == 'up' else '降'), True
-    if b[0][0] == 'single' and b[1][0] == 'single' and b[0][1] == b[1][1]:
-        return '规则池(%s)' % ('剔低' if b[0][1] == 'low' else '剔高'), True
-    if b[0][0] == 'invU' and b[1][0] == 'invU':
-        return '距离化候选(倒U)', True
+    tri = [base_shape(shapes.get(p)) for p in ('2010-2014', '2015-2018', '2019-2023')]
+    b23, b26 = base_shape(s23), base_shape(s26)
+    # 1. 距离化候选: 可信的 2023 段就是倒U
+    if b23[0] == 'invU':
+        tag = '两近段' if b26[0] == 'invU' else '2023主,2026=%s' % s26
+        return '距离化候选(倒U:%s)' % tag, True
+    # 2. 合成池: 2014/2018/2023 都单调同向, 且 2026 仍同向单调(强/weak)
+    dirs = {b[1] for b in tri}
+    if all(b[0] in ('mono', 'weakmono') for b in tri) and len(dirs) == 1:
+        d = dirs.pop()
+        if b26[0] in ('mono', 'weakmono') and b26[1] == d:
+            return '合成池(单调%s,2026=%s)' % ('升' if d == 'up' else '降', s26), True
+        return '人工复核(2014-2023单调但2026非同向单调:%s)' % s26, False
+    # 3. 规则池: 两近段都 single_tail 同侧
+    if b23[0] == 'single' and b26[0] == 'single' and b23[1] == b26[1]:
+        return '规则池(%s)' % ('剔低' if b23[1] == 'low' else '剔高'), True
     return '人工复核(近段形状不一致/U型)', False
 
 
