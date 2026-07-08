@@ -1,0 +1,7 @@
+cfg,file,rows,days,avg_names,avg_wsum,dmin,dmax
+M_mean3,pool2_Mmean_pure.csv,557683,3824,145.8,0.8891,2010-02-12,2026-03-27
+A4b,pool2_A4b_pure.csv,279649,3824,73.1,0.6497,2010-02-12,2026-03-27
+M_union3,pool2_Munion_pure.csv,182714,3824,47.8,0.4616,2010-02-12,2026-03-27
+M_mean3_CMFv5,pool2_Mmean_cmfveto.csv,442208,3824,115.6,0.828,2010-02-12,2026-03-27
+A4b_CMFv5,pool2_A4b_cmfveto.csv,227697,3824,59.5,0.5585,2010-02-12,2026-03-27
+M_union3_CMFv5,pool2_Munion_cmfveto.csv,142784,3824,37.3,0.366,2010-02-12,2026-03-27

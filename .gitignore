@@ -25,3 +25,7 @@ __pycache__/
 # 跑结果目录
 results/
 logs/
+
+# 交付数据可入 git（领导 2026-07-08 确认无隐私）;仅 delivery/ 下,results/ 仍忽略防臃肿
+!delivery/
+!delivery/**

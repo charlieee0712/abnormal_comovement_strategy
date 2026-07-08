@@ -1,7 +1,7 @@
 # PROJECT_STATUS.md — I11 事件驱动 A 股策略交接文档
 
 > 交接给 Claude Code (SSH 操作 47/56 服务器)。本文件是接手项目的唯一入口，先读完再动手。
-> 最后更新：2026-05-29
+> 最后更新：2026-07-08
 
 ---
 
@@ -9,7 +9,7 @@
 
 在 **I11 事件驱动信号**圈定的股票池（约 150-350 只/天）内，用多个**日频因子做规则筛选（剔尾）**，构造一个**纯多头、持仓 5 天**的选股策略（池2），交付给基金经理（下称"领导"）。领导会自测，决定直接用还是叠加他自己的因子上实盘。**截止 6/10。**
 
-**当前阶段**：单因子全面诊断（"单因子先过关，再谈规则筛选/合成"——这是领导明确要求的方法论，务必遵守）。
+**当前阶段**：两层结构定稿·6 候选 2026-07-08 已交付(见 §9)（"单因子先过关，再谈规则筛选/合成"——这是领导明确要求的方法论，务必遵守）。
 
 ---
 
@@ -21,7 +21,9 @@
   - 结果输出：`/mnt/sda2/lichenchen/results/<时间戳>_<后缀>/`（**每次跑都是新的带时间戳子文件夹**，不要往根目录堆）
   - 用户：`PengSX`
 - **56 服务器**：ClickHouse 高频数据库（分钟/L2），目前**未接入本项目**，6/10 后才用。连接信息见 §12。
-- **GitHub**：`https://github.com/charlieee0712/abnormal_comovement_strategy`（Private）
+- **GitHub**：`charlieee0712/abnormal_comovement_strategy`（Private）
+  - **认证 = SSH key（不是 token）**。47 上 git 操作（push/pull/fetch）一律走 SSH；remote 是 `git@github.com:charlieee0712/abnormal_comovement_strategy.git`。**不要用 token 或 https 方式**（旧 classic token `47_server` 已删，用了也会失败）。
+  - 47 SSH key：`~/.ssh/id_ed25519`（注释 `47-to-github`），公钥已加到 GitHub 账户（key 名 `turing_47_server`）。变更日期 2026-06-17。
 - **数据源（47 上）**：
   - 日 K：`/mnt/big/base/shibo/KLines_make/daily_temp3/`
   - Barra/中性化因子：服务器上已有 loader 封装
@@ -218,12 +220,16 @@ CCV_20d, info_discreteness_20d, CLV_20d, CVR_20d, drawdown_volume_ratio, tug_of_
 
 ---
 
-## 9. 池2 交付文件清单（P3，列名锁定）
+## 9. 池2 交付文件清单（2026-07-08 实际交付；格式经领导"可后调"授权）
 
-1. `clc_ts_all_pool1_signal_daily.csv` — 当日 I11 触发（3列：ticker int / tradeDate / 0-1）
-2. `clc_ts_all_pool1_window_daily.csv` — 5日窗口内（3列）
-3. `clc_ts_all_pool2_filtered_daily.csv` — 池2（**4列**：ticker / tradeDate / in_pool / weight）
-4-7. 4 个评分因子的原始值文件（因子最终定下来后命名）
+两层结构最终产出 = 3 构造 × {纯净 / +cmf veto} = **6 候选池2 + 1 共用池1**,`ticker/tradeDate/weight` 三列长表(领导 5/25 第9条 + 7/7 报告口径;ticker=去零整数、与 clc_ts_all_* 可 join)。全历史 2010-02-12 ~ 2026-03-27。
+
+- `pool1_I11_screening.csv` — I11 初筛母池(3列:ticker / tradeDate / in_pool=1)
+- `pool2_{Mmean,A4b,Munion}_{pure,cmfveto}.csv` — 6 候选精选池(3列:ticker / tradeDate / weight;weight=DEV 偏离约束目标权重、不归一)
+- 交付落点:公共库 `/mnt/big/base/public/FundamentalTL/量价因子/I11_candidate_pools/`(+ README/_delivery_stats)
+- 复现:`delivery/I11_candidate_pools_20260708/export_delivery_pools.py`(config-for-config 复现 phase3,24/24 自检 |d|0)
+
+（注:旧"列名锁定"曾设想单一 `pool2_filtered` 4列含 in_pool、pool1 拆 signal/window;两层聚合定稿后演变为上述 6 候选 3 列。领导要 in_pool/window 变体可再加。）
 
 ---
 
@@ -360,6 +366,10 @@ git -C /mnt/sda2/lichenchen/code/project_core commit -m "清晰描述改了什�
 # 跑回测前确保已 commit, 这样出问题能 git checkout 回退
 ```
 commit message 要具体（"把 Calendar PnL 改成双向剔尾 + 三 Sharpe"），不要 "update"、"fix" 这种。
+
+### 数据 / 交付入 git 政策（2026-07-08 起）
+- **领导 2026-07-08 确认交付数据无隐私** → 交付产物(池1/池2 CSV、README、复现脚本)**可入 git**,放 `delivery/<交付名>_<日期>/`;大体量 CSV 用 gzip 归档(`.tar.gz`)进库,README/stats/脚本明文可浏览。
+- **`results/` 仍不入 git**(防仓库臃肿;结果可由脚本复现)。`.gitignore` 已对 `delivery/` 开例外。
 
 ### 输出纪律：分析任务末尾附「可复制纯文本摘要」
 
