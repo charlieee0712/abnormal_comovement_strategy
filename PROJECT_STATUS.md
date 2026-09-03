@@ -1,7 +1,7 @@
 # PROJECT_STATUS.md — I11 事件驱动 A 股策略交接文档
 
 > 交接给 Claude Code (SSH 操作 47/56 服务器)。本文件是接手项目的唯一入口，先读完再动手。
-> 最后更新：2026-07-08
+> 最后更新：2026-09-03
 
 ---
 
@@ -9,7 +9,7 @@
 
 在 **I11 事件驱动信号**圈定的股票池（约 150-350 只/天）内，用多个**日频因子做规则筛选（剔尾）**，构造一个**纯多头、持仓 5 天**的选股策略（池2），交付给基金经理（下称"领导"）。领导会自测，决定直接用还是叠加他自己的因子上实盘。**截止 6/10。**
 
-**当前阶段**：两层结构定稿·6 候选 2026-07-08 已交付(见 §9)（"单因子先过关，再谈规则筛选/合成"——这是领导明确要求的方法论，务必遵守）。
+**当前阶段**：**回测引擎修正 + 全候选库复审完成（2026-09-02/03）**，v2 六候选已产出（`delivery/I11_candidate_pools_v2_20260903/`，公共库交付按用户指令），见 §9。引擎两处修正与因子池三处调整见 §4.8–4.11；7/8 的 v1 六候选及其数字已被取代。当前因子池：合成池 = conditional_turnover + turnover_volatility_60d + cum_return_20d（决策层 mean 剔最差半）；规则池 = CVR_20d 窄否决（剔池内最高 1/5）。下一步：样本延长到 2026-09 做确证、T+1 可成交性、L2/概念数据。（"单因子先过关，再谈规则筛选/合成"——这是领导明确要求的方法论，务必遵守）。
 
 ---
 
@@ -38,8 +38,13 @@
 | `data_loader.py` | 加载日频数据，返回 dict（close/high/low/vwap/volume/turnover_rate/mcap/industry_zx1 等）| 稳定 |
 | `features_daily.py` | 计算 70 个日频特征，`calc_all_daily_features(data)` 返回 `{name: DataFrame}` | 稳定 |
 | `event_study.py` | 含 `PERIODS`（4 段定义）、`get_base_pool(data)` | 稳定 |
-| `pool_screening_v2.py` | 含 I11 信号定义、硬约束、各因子计算函数、中性化 | 稳定 |
-| `comprehensive_factor_diagnosis.py` | **当前主力诊断脚本**（Event Study + Calendar PnL）| 见 §5，最新版刚改完待跑 |
+| `pool_screening_v2.py` | 含 I11 信号定义、硬约束、各因子计算函数、中性化 | 稳定（地基）。⚠️ 其内 `compute_calendar_pnl` 的 v2 sleeve 路径持仓不 shift（整整早一天），第二次汇报的 +2.45 出自此，已被 DEV 链路取代，勿再引用 |
+| `comprehensive_factor_diagnosis.py` | **当前主力诊断脚本**（Event Study + Calendar PnL）| **引擎口径 2026-09-02 定稿（commit cb9fea2）**：`compute_calendar_pnl(..., exec_lag=1, adjust=True)`（持仓按信号日 T 索引、T+1 vwap 成交、`shift(exec_lag+1)`、后复权收益）、`compute_forward_5d_excess(..., adjust=True)`、`adjust_factor / adjusted_prices / vwap_daily_return`。`exec_lag=0 / adjust=False` = 旧口径，仅自测与分解用，禁止用于正式输出（§14）。§5 的旧数字已失效 |
+| `selftest_engine_fix.py` | 引擎修正真数据自测 5 条（复权对账 / 除权计数 / 旧口径逐格回归 / 两视角恒等式 / 前视探测器） | **口径守卫·动引擎必跑，应 5/5** |
+| `e2_decomposition.py` | 六候选 × {旧/新时点} × {未/已复权} 四格分解 + phase3 24 锚点接线自检（`results/20260903_0935_E2_decomposition`） | 引擎修正证据 |
+| `e3_single_factor_rerun.py` | 35 因子 × 双向 × k2/k5 × 旧/新口径 单因子复审表，每段一进程（`results/20260903_1037_E3_single_factor`） | 复审证据 |
+| `e4_agg_review.py` | 聚合层复审：rev 席位 / 反转代表 / CVR 合成 vs 否决 / cmf 正向否决 + 双基准 + 8 因子相关矩阵（`results/20260903_1132_E4_agg_review`） | 复审证据·终判依据 |
+| `export_delivery_pools_v2.py` | v2 六候选交付导出（自检 E4 锚点 12/12 + 池1 md5 == 0708） | 活跃·交付工具（取代 v1 导出脚本） |
 | `export_factors_to_library.py` | 把 I11 信号 + 4 因子按领导格式导出到公共因子库（3 列长表） | 活跃·交付工具（P3 用） |
 | `engine.py` | 因子回测引擎,实现领导 PnL 公式（VWAP 旧/新仓位）;纯函数库,当前被 0 处 import | 保留·领导 PnL 公式参照（被 0 处 import,不在现行链路）。⚠️ PnL 除数口径“有条件正确”:喂归一化权重才对;用其自带 factor_to_weight 默认助手会除以全市场（约5000）,即 /5000 bug 形态。复用作参照时必须喂归一化权重,不要走默认路径。 |
 | `factor_marginal_diagnosis.py` | 因子相关性矩阵 + leave-one-out 边际贡献回测（建在旧 score_pool 合成框架上） | 历史脚本,但 leave-one-out 边际贡献逻辑当下就相关（确立每因子真实价值）;复用时换双向剔尾口径。留着,优先级不低 |
@@ -47,7 +52,7 @@
 | `full_a_single_factor.py` | 全A 单因子分组测试（跳过 I11 预筛选） | 重要证据·证明 cmf 在全市场反向（非 I11 池选择效应）,支撑 cmf 反向用法 |
 | `single_factor_groups.py` | 单因子 2/3/5 分组（I11 池内,看头/尾区分度） | 废弃·错误 √252 年化口径的“案发现场”（勿用其 Sharpe） |
 | `sharpe_credibility_diagnosis.py` | 单因子 Sharpe 可信度 3 合 1 诊断（对齐/扣成本/跨段衰减） | 历史·诊断并确立 √(252/5) 修复的证据 |
-| `i11_calendar_pnl.py` | I11 日历时间 PnL（回应领导反馈2:拉到时间轴看暴露） | 历史·Phase1 信号验证证据（领导问信号是否过拟合可直接跑,留原地） |
+| `i11_calendar_pnl.py` | I11 日历时间 PnL（回应领导反馈2:拉到时间轴看暴露） | 历史·Phase1 信号验证证据（领导问信号是否过拟合可直接跑,留原地）。⚠️ 其记账时点从 T 日 vwap 起记（同旧 shift(1)），数字带半天前视，只作历史证据，勿再引用 |
 | `i11_cross_validation.py` | I11 信号交叉验证（v2a/v2b/v2c 变种对比） | 历史·Phase1 信号验证证据（同上,留原地） |
 | `i11_final.py` | I11 最终确认（final_min 等极简变种） | 历史·Phase1 信号验证证据（同上,留原地） |
 | `i11_risk_adjusted.py` | I11 风险调整评估 Phase1.7（Sharpe/Calmar/IR） | 历史·Phase1 信号验证证据（同上,留原地） |
@@ -127,9 +132,32 @@ weight = min(0.01, 0.03/N_行业内, 1.00/N_总)
 - 因子计算别逐 cell 写 DataFrame（极慢），用 numpy 数组累积最后一次性建（脚本已优化）。
 - 中性化只算一次缓存复用，别重复算（脚本已优化 `precompute_neutralized_factor`）。
 
+### 4.8 Calendar 记账时点（2026-09-02 修，最重要的口径坑）
+- 原 `compute_calendar_pnl` 用回看日收益 `vwap_t/vwap_{t-1}-1`，持仓只 `shift(1)` → T 收盘信号从 **T 日 vwap** 起记收益。收盘后买不到 T 日 vwap，是半天前视；且这段收益与信号相关（CMF 高 / 收盘近区间高的票被系统性高估，反转型被低估）。
+- 现口径：持仓按信号日 T 索引、`shift(exec_lag+1)=2`、T+1 vwap 进、T+1+hold_days vwap 出，与视角① `compute_forward_5d_excess`（k=2..1+hold_days）逐笔同起点（`selftest_engine_fix` T4 恒等式 max|diff| 3.5e-17）。
+- 量级：只含 T 日盘中信息的探测器（close/vwap−1 keep-HIGH）旧口径年化 +29.5% / NW 9.0，新口径 −6.2% / NW −2.0；六候选 DEV-net 每段下移 1～6 个点，带 cmf 否决的版本更多。
+- 视角①（事件研究 / IC / 分组形状）时点一直是对的；受影响的是 2026-05 之后所有 Calendar 口径的数字（含 6/9 归因、7/7 汇报）。
+
+### 4.9 收益复权（2026-09-02 修）
+- 原两视角都用 daily_temp3 未复权 close/vwap 算收益，除权除息日记成假跌（2010–2026 共 42,968 个事件，中位 −1.21%，16.5% 的事件 <−20%，最小 −80%）。
+- 现口径：`adjust_factor` 由 `lclose`（交易所前收盘价，与 `change_pct` 逐格一致到 5e-5）推后复权累计因子；**用 `is_open` 掩掉停牌行 + `prev` 用 ffill 跨停牌**（数据源在停牌行把 close/lclose 填成正数搬运值，不掩会重复计）。不用 `adj_factor` 列（首次除权前 NaN，3.5%）。
+- 方向：组合与基准同受假跌，但我们的选股避开除权前抢权股 → 基准比组合多挨假跌 → 旧口径 2010–2018 超额被抬 1～3.4 个点；后两段≈0。
+- 信号 / 因子值仍按未复权价算：是噪声不是前视，改它 = 改信号定义，未动（列为开放问题）。
+
+### 4.10 cmf 方向与"规则池否决"的教训（2026-09-02）
+- 6/18 把 cmf_change 从"反向"纠成"keep-high"，依据是旧口径 Calendar 数字；新口径下 cmf_change 激增组是池内最差组（原 4.5 的判断本来是对的），而 7/8 交付的 CMFv5 否决剔的是资金流转弱组 = 池内最好的一组。否决层的 +2.7～3.3 抬升全是时点假象（新口径边际 −1.18/−0.60/+0.19/+0.97）。
+- 按正确方向再测否决：三底座只 M_mean3 过 → cmf_change 退役。
+- 教训：① 否决层判据"不实质变差即保留"太松，现改为"≥3 段净值升 且 NW 升 且无一段降超 1.0"；② 任何"纠符号"都要在两视角同时成立（形状 worst 组 + Calendar），单靠 Calendar 会被时点假象带偏。
+
+### 4.11 池拖累与双基准（2026-09-02）
+- I11 池自身（pool0 DEV 同机制）vs 干净全市场等权：新口径 −5.22 / −2.86 / −1.93 / −0.35（NW −2.75 / −0.80 / −0.89 / −0.09）。6/9 的"裸底池≈中性"更新为"早段显著偏负，alpha 全在池内剔尾"。
+- 因此报数固定两条基准：主 = 干净全市场等权（投资者视角，含池拖累）；副 = pool0 DEV 同机制（池内选股能力）。
+
 ---
 
 ## 5. `comprehensive_factor_diagnosis.py` 当前状态（主力脚本）
+
+> ⚠️ 2026-09-03：本节数字为 2026-05-29 旧口径（shift(1) + 未复权），已失效。单因子最新数字见 `results/20260903_1037_E3_single_factor/summary.txt`（新口径、DEV 剔尾、4 段）。
 
 **最新版刚改完，待在 47 上跑验证。** 当前配置：
 - **因子**：目前 spec 里是 4 个原始因子（reversal_skip1 / parkinson_vol / abn_turnover / cmf_change_neg）。
@@ -161,6 +189,8 @@ disown
 ---
 
 ## 6. 待办（按优先级）
+
+> 2026-09-03：本节是 5 月的待办，已被后续阶段覆盖；当前待办见 §0（延长样本确证 / T+1 可成交性 / L2·概念数据）。
 
 ### P0 — 验证新版诊断脚本（立即）
 跑 4 个原始因子，确认：
@@ -220,7 +250,15 @@ CCV_20d, info_discreteness_20d, CLV_20d, CVR_20d, drawdown_volume_ratio, tug_of_
 
 ---
 
-## 9. 池2 交付文件清单（2026-07-08 实际交付；格式经领导"可后调"授权）
+## 9. 池2 交付文件清单（v2 2026-09-03；v1 2026-07-08 已被取代；格式经领导"可后调"授权）
+
+**v2（2026-09-03，引擎修正 + 复审后）** = {A4b, M_mean3_v2（cond+tvol+cum_return_20d mean 剔上半）, M_union3_v2（三 drop 并集之外）} × {纯净, +CVRv5（剔池内 CVR_20d 最高 1/5）} = 6 池2 + 共用池1。
+- 仓库：`delivery/I11_candidate_pools_v2_20260903/`（tar.gz + README + _delivery_stats + summary + old_vs_new.txt + `export_delivery_pools_v2.py`）；results：`results/20260903_1214_delivery_pools_v2`。
+- 公共库：`/mnt/big/base/public/FundamentalTL/量价因子/I11_candidate_pools_v2/`（按用户指令复制；v1 目录保留并放 SUPERSEDED 标注）。
+- 池1 与 v1 逐字节相同（md5 6006780eb791fe6a7f66e3829cb23763）；6 个池2 全部更新。日均持仓：A4b 73/62（veto）、Mmean_v2 146/127、Munion_v2 51/47。
+- 数字（新口径 DEV net 4 段 | NW）：A4b_CVRv5 3.06/6.99/8.43/10.33 | 3.47/3.77/3.95/1.96 为最强；全表见 README。
+
+**v1（2026-07-08，已取代，下文为历史记录）**：
 
 两层结构最终产出 = 3 构造 × {纯净 / +cmf veto} = **6 候选池2 + 1 共用池1**,`ticker/tradeDate/weight` 三列长表(领导 5/25 第9条 + 7/7 报告口径;ticker=去零整数、与 clc_ts_all_* 可 join)。全历史 2010-02-12 ~ 2026-03-27。
 
@@ -334,6 +372,7 @@ ps -ef | grep python | grep -v grep
 - `features_daily.py`
 - `event_study.py`
 - `pool_screening_v2.py`
+- **`comprehensive_factor_diagnosis.py` 里的引擎口径**：`compute_calendar_pnl` 的 `exec_lag=1 / adjust=True` 默认值与 `shift(exec_lag+1)`、`adjust_factor` 的写法（is_open 掩码 + ffill）、`compute_forward_5d_excess` 的 `k=2..1+hold_days` —— 属口径，改动须经用户；`exec_lag=0 / adjust=False` 只许出现在自测与分解脚本里。动引擎必跑 `selftest_engine_fix.py`，应 5/5。
 
 → 如果某个任务**确实**需要改这四个里的东西，**先停下来报告用户**，说明为什么要改、改哪里，等用户确认。改之前**必须 git commit 当前状态 + 单独备份该文件**（`cp xxx.py xxx.py.bak_<日期>`）。
 
@@ -385,5 +424,6 @@ commit message 要具体（"把 Calendar PnL 改成双向剔尾 + 三 Sharpe"）
 4. **启动预计 >30 分钟的任务**——先报告时长，等确认。
 5. **任何要给领导看的数字/结论**——必须经用户过目，CC 不直接对接领导，也不在文档/输出里替用户下"可以交付"的结论。
 6. **改动 I11 信号定义、池子构造规则、权重公式**（§3）——这些已与领导确认，改动前必须经用户。
+7. **改动回测引擎口径**（§14 新增项：记账时点、复权、前向收益起点）。
 
 **默认姿势**：拿不准就停下来问用户，而不是替用户做决定。用户的工作流是"和 Claude（网页）讨论策略 → 写 prompt 给 CC 执行"，所以 CC 收到的 prompt 应该是明确的执行指令；**指令没覆盖到的判断，回退给用户，不要自行外推。**
