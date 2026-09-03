@@ -168,17 +168,55 @@ def get_default_factor_specs():
 
 
 # ============================================================
+# 后复权 + VWAP 日收益 (2026-09 E1 引擎修正; 参照 factor_library forward_returns.adjust_factor, commit a654a12)
+# ============================================================
+
+def adjust_factor(data):
+    """后复权累计因子 A_t = Pi_{s<=t} prev_s / lclose_s, prev_s = s 日之前最近一个有效收盘价.
+    lclose 是交易所口径的前收盘价(已含除权除息调整, 与 change_pct 逐格一致), 不用 adj_factor 列(首次除权前 NaN, 约 3.5% 格子).
+    只在交易日(is_open==1)算比值, 停牌行记 1: 数据源在停牌行把 close/lclose 填成搬运值(正数, 非 NaN), 不能当真实成交价用;
+    prev 取上一交易日收盘(ffill 跨停牌), 因此停牌期间发生的除权在复牌日被一次性捕捉、不重复计.
+    只用于算收益(跨日比价); 复权价 = 原始价 x A_t. 同一日截面内的因子值不受影响.
+    与 factor_library 版本的差别: 加 is_open 掩码 + prev 用 ffill 跨停牌(那边 prev=close.shift(1) 且不掩停牌行, 依赖数据源对停牌行的填法).
+    """
+    is_open = data['is_open'] == 1
+    close = data['close'].where(is_open & (data['close'] > 0))
+    lclose = data['lclose'].where(is_open & (data['lclose'] > 0))
+    prev = close.ffill().shift(1)
+    ok = close.notna() & prev.notna() & lclose.notna()
+    ratio = (prev / lclose).where(ok).fillna(1.0)
+    return ratio.cumprod()
+
+
+def adjusted_prices(data, keys=('close', 'vwap')):
+    """{key: 后复权价}, 见 adjust_factor."""
+    a = adjust_factor(data)
+    return {k: data[k] * a for k in keys}
+
+
+def vwap_daily_return(data, adjust=True):
+    """VWAP 回看日收益 vwap_t / vwap_{t-1} - 1.
+    adjust=True: 后复权 vwap (正式口径). adjust=False: 原始 vwap = 2026-09 之前的旧写法, 仅供自测/分解对照, 禁止用于正式输出.
+    """
+    vwap = adjusted_prices(data, ('vwap',))['vwap'] if adjust else data['vwap']
+    return (vwap / vwap.shift(1) - 1).replace([np.inf, -np.inf], np.nan)
+
+
+# ============================================================
 # Forward return 计算 (Event Study 用)
 # ============================================================
 
-def compute_forward_5d_excess(data, base_pool, hold_days=5):
-    """5 日累积超额 (bp), 基准=base_pool 等权."""
+def compute_forward_5d_excess(data, base_pool, hold_days=5, adjust=True):
+    """5 日累积超额 (bp), 基准=base_pool 等权.
+    时点: k=2..1+hold_days -> vwap_{T+1} 买入、vwap_{T+1+hold_days} 卖出 (与 Calendar exec_lag=1 同起点).
+    adjust=True 用后复权 vwap (2026-09 E1 起); adjust=False 仅供对照.
+    """
     vwap = data['vwap']
     ref_idx = vwap.index
     ref_col = vwap.columns
     bp = base_pool.reindex(index=ref_idx, columns=ref_col).fillna(0)
     
-    vwap_daily_ret = (vwap / vwap.shift(1) - 1).replace([np.inf, -np.inf], np.nan)
+    vwap_daily_ret = vwap_daily_return(data, adjust)
     bm_daily = vwap_daily_ret.where(bp == 1).mean(axis=1)
     excess_daily = vwap_daily_ret.sub(bm_daily, axis=0)
     
@@ -447,12 +485,19 @@ def assign_weights(holdings, industry, max_stock=0.01, max_industry=0.03, max_to
     return weights
 
 
-def compute_calendar_pnl(weights, data, base_pool, hold_days=5, cost_bp_bilateral=6):
+def compute_calendar_pnl(weights, data, base_pool, hold_days=5, cost_bp_bilateral=6, exec_lag=1, adjust=True):
     """
-    Calendar PnL: 5 日持有期, 持仓累积.
+    Calendar PnL: hold_days 日持有期, 持仓累积 (每天换 1/hold_days).
+    口径 (2026-09 E1 定稿):
+      - weights 一律按【信号日 T】索引, 调用方不预先 shift.
+      - exec_lag=1: T 收盘出信号, T+1 vwap 成交. daily_ret 是回看日收益 (vwap_t/vwap_{t-1}-1),
+        故持仓 shift(exec_lag+1)=2. 每笔 T+1 vwap 进、T+1+hold_days vwap 出,
+        与 compute_forward_5d_excess (k=2..1+hold_days) 逐笔同起点 (selftest_engine_fix T4 恒等式保证).
+      - adjust=True: 收益用后复权 vwap (adjust_factor), 除权除息日不再记假跌.
+      - exec_lag=0 / adjust=False = 2026-09 之前的旧写法 (T 日 vwap 起记 + 未复权),
+        仅供自测复现与 E2 分解对照, 禁止用于任何正式输出.
     
-    实际持仓 = 过去 5 天选股的加权平均 (每天 1/5 仓位换一次)
-    每日 PnL = sum(实际持仓权重 × 当日 daily return) - 当日基准 daily return × 总仓位
+    每日 PnL = sum(实际持仓权重 × 当日 daily return) - 当日基准 daily return × 总仓位.
     """
     vwap = data['vwap']
     ref_idx = vwap.index
@@ -465,13 +510,13 @@ def compute_calendar_pnl(weights, data, base_pool, hold_days=5, cost_bp_bilatera
     actual_holding = weights_aligned.rolling(hold_days, min_periods=1).mean()
     
     # 每日 daily return (VWAP-to-VWAP)
-    daily_ret = (vwap / vwap.shift(1) - 1).replace([np.inf, -np.inf], np.nan)
+    daily_ret = vwap_daily_return(data, adjust)
     
     # 基准 daily ret = I11 池等权
     bm_daily = daily_ret.where(bp == 1).mean(axis=1)
     
-    # 组合 daily PnL (gross): shift(1) 把 T 日的持仓信号对应 T+1 的收益
-    actual_holding_t1 = actual_holding.shift(1)
+    # 持仓按信号日 T 索引; exec_lag=1 = T+1 vwap 成交; daily_ret 是回看日收益, 故 shift(exec_lag+1)=2
+    actual_holding_t1 = actual_holding.shift(exec_lag + 1)
     portfolio_daily_ret = (actual_holding_t1 * daily_ret).sum(axis=1)
     daily_position = actual_holding_t1.sum(axis=1).fillna(0)
     excess_daily = portfolio_daily_ret - bm_daily * daily_position
@@ -491,6 +536,9 @@ def compute_calendar_pnl(weights, data, base_pool, hold_days=5, cost_bp_bilatera
         'daily_turnover': holding_diff,
         'turnover_per_day': holding_diff.mean(),
         'turnover_annual': holding_diff.sum() / (len(holding_diff) / 252) if len(holding_diff) > 0 else 0,
+        'port_daily': portfolio_daily_ret,   # 组合自身日收益(未减基准), 自测恒等式用
+        'bench_daily': bm_daily,             # 基准日收益
+        'exec_lag': exec_lag, 'adjust': adjust,
     }
 
 
