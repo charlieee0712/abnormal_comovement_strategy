@@ -272,7 +272,7 @@ def merge(OUT):
         for h in MAIN_H:
             try: r = vm.loc[(pa, ch, h)]; cells.append('D%+5.2f I%+5.2f' % (r.D_ann, r.I_ann))
             except KeyError: cells.append('     -      ')
-        W('  %-52s %s' % ('%s -> %s' % (pa.split('|')[0][:16], ch[-34:]), ' | '.join(cells)))
+        W('  %-64s %s' % ('%s -> %s' % (pa[-28:], ch[-34:]), ' | '.join(cells)))
     W('\n== (E) 事件时间剖面 E 视图 (区间贡献 bp, 形成日均值) ==')
     pv = pf.groupby(['set_id', 'j'])['mean'].mean().unstack()
     zones = [('j1-3', range(1, 4)), ('j4-5', range(4, 6)), ('j6-10', range(6, 11)),
@@ -288,7 +288,13 @@ def merge(OUT):
         W('  %-34s H%-2d buy_blocked %.4f  sell_blocked %.4f' % (r.cfg, int(r.hold), r.buy_blocked_share, r.sell_blocked_share))
     W('\n== (I) 边界 ==')
     W('  RIGHT_BOUNDARY_OPEN: H 上限 = %d; 若最优在右端需更长轴才能定平台' % HMAX)
-    W('  bin vs dec 成员差异格数: ' + '; '.join('%s=%d' % (r.cfg, r.days_nonempty) for _, r in cr.head(0).iterrows()) or '  见 config_registry.csv')
+    # 二分组 vs 十分位留 50%: 直接比 mask 的 SHA (逐票相同则 sha 相同)
+    sh = cr.pivot_table(index='period', columns='cfg', values='mask_sha', aggfunc='first')
+    same = []
+    for a, b in (('M_mean2_bin', 'M_mean2_dec'), ('M_mean3_v2_bin', 'M_mean3_v2_dec')):
+        if a in sh.columns and b in sh.columns:
+            eq = int((sh[a] == sh[b]).sum()); same.append('%s vs %s: %d/%d 段 mask 逐票相同' % (a, b, eq, len(sh)))
+    W('  二分组 vs 十分位留50%: ' + '; '.join(same))
     W('\n[MERGE DONE] cfgs=%d rows_daily=%d' % (len(cfgs), len(dl)))
     io.open(os.path.join(OUT, 'summary.txt'), 'w', encoding='utf-8', newline='\n').write('\n'.join(S) + '\n')
     io.open(os.path.join(OUT, 'limit_register.md'), 'w', encoding='utf-8', newline='\n').write(
