@@ -32,8 +32,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import data_loader
 USER_CACHE_DIR = '/mnt/sda2/lichenchen/data/cache/'
 
-# 双边成本 (bp), 可被 --cost_bp 覆盖. 默认6 (与历史口径一致).
-COST_BP_BILATERAL = 6.0
+# 成本 (bp, 一次买卖合计), 可被 --cost_bp 覆盖. 2026-09-03 起默认 8 = 印花税 5 + 佣金约 3, 不含滑点; 2026-09 之前的结果目录为 6.
+COST_BP_BILATERAL = 8.0
 os.makedirs(USER_CACHE_DIR, exist_ok=True)
 data_loader.PATHS['cache_dir'] = USER_CACHE_DIR
 
@@ -485,7 +485,7 @@ def assign_weights(holdings, industry, max_stock=0.01, max_industry=0.03, max_to
     return weights
 
 
-def compute_calendar_pnl(weights, data, base_pool, hold_days=5, cost_bp_bilateral=6, exec_lag=1, adjust=True):
+def compute_calendar_pnl(weights, data, base_pool, hold_days=5, cost_bp_bilateral=8, exec_lag=1, adjust=True):
     """
     Calendar PnL: hold_days 日持有期, 持仓累积 (每天换 1/hold_days).
     口径 (2026-09 E1 定稿):
@@ -525,7 +525,7 @@ def compute_calendar_pnl(weights, data, base_pool, hold_days=5, cost_bp_bilatera
     holding_diff = actual_holding_t1.diff().abs().sum(axis=1) / 2.0
     holding_diff = holding_diff.fillna(0)
     
-    # 扣成本: 每天的实际换手率 × 双边成本 (可配置, 默认6bp)
+    # 扣成本: 每天的实际换手率 × 双边成本 (可配置, 默认 8bp; 2026-09-03 起)
     daily_cost = holding_diff * (cost_bp_bilateral / 1e4)
     excess_daily_net = excess_daily - daily_cost
     
@@ -1033,8 +1033,8 @@ def main():
     parser.add_argument('--period', default='all', help='all 或具体段名')
     parser.add_argument('--factors', default='all',
                         help="all 或逗号分隔因子名 (子集验证, 如 'reversal_skip1,cum_return_20d')")
-    parser.add_argument('--cost_bp', type=float, default=6.0,
-                        help='双边成本 bp (默认6, 可调; 实盘中低频参考10-15)')
+    parser.add_argument('--cost_bp', type=float, default=8.0,
+                        help='成本 bp, 一次买卖合计 (默认 8 = 印花税 5 + 佣金 3; 含滑点约 12)')
     args = parser.parse_args()
     
     global COST_BP_BILATERAL
