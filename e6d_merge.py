@@ -188,9 +188,12 @@ def merge(OUT):
                            d_CMAX_CMEAN=d5[0], t_CMAX_CMEAN=d5[1],
                            d_DEP_DEPnr=d6[0], t_DEP_DEPnr=d6[1],
                            d_best2f_vs_SF25=max(nv(dxy), nv(dyx), nv(cme), nv(cmx)) - best_sf,
-                           # 两边都不取 max, 无选择档数不对称: 复合均值 vs 两个单因子的平均
+                           # 两边都不取 max, 无选择档数不对称: 复合均值 vs 两个单因子的平均(宽松端)
                            d_CMEAN_vs_meanSF25=nv(cme) - 0.5 * (nv('SF25:' + X) + nv('SF25:' + Y)),
-                           d_DEPxy_vs_meanSF25=nv(dxy) - 0.5 * (nv('SF25:' + X) + nv('SF25:' + Y))))
+                           d_DEPxy_vs_meanSF25=nv(dxy) - 0.5 * (nv('SF25:' + X) + nv('SF25:' + Y)),
+                           # 保守端: 左边不取 max, 右边取两个单因子里较好的那个
+                           d_CMEAN_vs_bestSF25=nv(cme) - best_sf,
+                           d_DEPxy_vs_bestSF25=nv(dxy) - best_sf))
     PR = pd.DataFrame(pr); PR.to_csv(os.path.join(OUT, 'pair_matrix.csv'), index=False)
     P('pair_matrix.csv  %d 对' % len(PR))
 
@@ -209,7 +212,8 @@ def merge(OUT):
                          dist('d_DEPyx_CMEAN', 't_DEPyx_CMEAN'), dist('d_order', 't_order'),
                          dist('d_IND_CMEAN', 't_IND_CMEAN'), dist('d_CMAX_CMEAN', 't_CMAX_CMEAN'),
                          dist('d_DEP_DEPnr', 't_DEP_DEPnr'), dist('d_best2f_vs_SF25'),
-                         dist('d_CMEAN_vs_meanSF25'), dist('d_DEPxy_vs_meanSF25')])
+                         dist('d_CMEAN_vs_meanSF25'), dist('d_DEPxy_vs_meanSF25'),
+                         dist('d_CMEAN_vs_bestSF25'), dist('d_DEPxy_vs_bestSF25')])
     DIST.to_csv(os.path.join(OUT, 'taxonomy_distribution.csv'), index=False)
 
     # ---------- 5. 132 个有序对的 DEP-CMEAN25 (H-E6d-1 / 两向分解 / 留一因子) ----------
@@ -388,6 +392,11 @@ def merge(OUT):
     P('== (B) H-E6d-1: DEP-CMEAN25 按 (闸 role_hint, 排序器 role_hint) 分格 ==')
     P(cells.to_string(index=False, float_format=lambda z: '%+.3f' % z))
     P('  单尾->渐变 是否为中位数最高格: %s' % ('是 (H-E6d-1 未被否)' if H1_hit else '否 (H-E6d-1 被否)'))
+    has_g = cells.hintX.str.contains('渐变') | cells.hintY.str.contains('渐变')
+    P('  含渐变因子的格 (任一槽位): %d 个, 全部为负 = %s;  不含渐变的格: %d 个, 全部为正 = %s'
+      % (int(has_g.sum()), bool((cells.loc[has_g, 'median'] < 0).all()),
+         int((~has_g).sum()), bool((cells.loc[~has_g, 'median'] > 0).all())))
+    P('  注: 本格检验的是"差"(DEP-CMEAN25), 不是净值水平; 净值水平见 (E) 的 net_as_gate / net_as_ranker')
     P('')
     P('== (C) 两向分解 d = mu + a_X(闸) + b_Y(排序器);  mu = %+.3f, 残差 RMS = %.3f ==' % (mu, resid))
     P(TW[['factor', 'role_hint', 'gate_effect', 'ranker_effect']].to_string(
@@ -431,6 +440,11 @@ def merge(OUT):
                                           d_vs_5050_median=('d_vs_5050', 'median'),
                                           nohold=('days_nohold', 'sum')).to_string(
             float_format=lambda z: '%+.3f' % z))
+    if len(DEPTH):
+        pdp = DEPTH[(DEPTH.tag == 'prod') & (DEPTH.s1 == 50) & (DEPTH.s2 == 50)]
+        if len(pdp):
+            P('  生产父 十分位(50,50) vs 二分组 DEP 的差 d_vs_binary_DEP = %+.6f'
+              % float(pdp['d_vs_binary_DEP'].iloc[0]))
     P('')
     P('== (K) 边界与计数 ==')
     P('  配置 %d;  bootstrap 族 A %d 个 / 族 B %d 个;  B=%d, 块长 %d'
