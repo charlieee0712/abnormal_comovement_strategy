@@ -55,11 +55,30 @@ DRAWS = np.stack([np.concatenate([segidx[s][stat_idx(len(segidx[s]), BLOCK_L, rn
 P('bootstrap: stationary, 块长 %d, B=%d, 按段, 共用日期 draw' % (BLOCK_L, NBOOT))
 
 
+# 抽样计数矩阵: 一次矩阵乘代替逐列 fancy-index (等价, 但快约三个数量级)
+DCNT = np.stack([np.bincount(DRAWS[j], minlength=Tn) for j in range(NBOOT)], axis=1).astype(np.float64)
+_okref = (~np.isnan(NET.iloc[:, 0].values)).astype(np.float64)
+DEN = np.maximum(_okref @ DCNT, 1.0)                       # (NBOOT,) 全序列同 NaN 模式(基准全 NaN 日)
+
+
 def boot_mean(x):
     """x: (Tn,) -> (NBOOT,) 年化"""
     v = np.nan_to_num(x, nan=0.0); ok = (~np.isnan(x)).astype(float)
-    num = v[DRAWS].sum(axis=1); den = ok[DRAWS].sum(axis=1)
+    num = v @ DCNT; den = ok @ DCNT
     return np.where(den > 0, num / np.maximum(den, 1), np.nan) * 252 * 100.0
+
+
+def boot_mat(X):
+    """X: (Tn,K) 含 NaN -> (K,NBOOT) 年化; 与 boot_mean 等价"""
+    Xf = np.nan_to_num(np.asarray(X, float), nan=0.0)
+    return (Xf.T @ DCNT) / DEN * 252 * 100.0
+
+
+_chk = NET.iloc[:, :3].values
+_a = boot_mat(_chk); _b = np.stack([boot_mean(_chk[:, j]) for j in range(_chk.shape[1])])
+_e = float(np.nanmax(np.abs(_a - _b)))
+assert _e < 1e-9, 'boot_mat 与 boot_mean 不等价: max|d| = %.3e' % _e
+P('boot_mat vs boot_mean 等价性 max|d| = %.3e' % _e)
 
 
 def band(obs, bt, names, fam):
@@ -116,11 +135,10 @@ for rp in sorted(RM):
     if real not in NET.columns: continue
     d = NET[real].values - RM[rp]
     ann, t, n = K.score_hac(d, 5)
-    mc = float(np.nanmean(RS[rp]) / np.sqrt(max(RN[rp], 1))) * 252 * 100.0
     r = dict(rule=rule, profile=profile, n_paths=RN[rp],
              real_net8=float(np.nanmean(NET[real].values)) * 252 * 100.0,
              rand_net8=float(np.nanmean(RM[rp])) * 252 * 100.0,
-             increment=ann, t_increment=t, mcse=mc)
+             increment=ann, t_increment=t)
     for k in (32, 64, 128):
         if (rp, k) in PREF:
             r['rand_net8_%d' % k] = float(np.nanmean(PREF[(rp, k)])) * 252 * 100.0
@@ -128,15 +146,31 @@ for rp in sorted(RM):
         r['prefix_drift_64_128'] = r['rand_net8_128'] - r['rand_net8_64']
     rows.append(r)
 INC = pd.DataFrame(rows)
+# MCSE = 每条路径「年化」值跨 seed 的 sd / sqrt(B)。
+# 注意不能用「逐日 sd 的均值 / sqrt(B) 再年化」——那忽略了对 T 天取平均本身降噪, 会高估约一个数量级。
+# 必须先按 seed 把四段按有效天数加权合成「全窗口」年化值, 再取跨 seed 的 sd;
+# 直接对 (rule,profile) 分组会把段间差异混进蒙特卡洛误差。
+if len(INC) and len(S):
+    S['_w'] = S['days_valid'].astype(float)
+    S['_x'] = S['net8_ann'] * S['_w']
+    S['_g'] = S['gross_ann'] * S['_w']
+    ps = S.groupby(['rule_id', 'profile', 'seed'], sort=False).agg(
+        _x=('_x', 'sum'), _g=('_g', 'sum'), _w=('_w', 'sum')).reset_index()
+    ps['net8_full'] = ps['_x'] / ps['_w']; ps['gross_full'] = ps['_g'] / ps['_w']
+    g2 = ps.groupby(['rule_id', 'profile'])
+    MCS = pd.DataFrame(dict(mcse=g2.net8_full.std(ddof=1) / np.sqrt(g2.net8_full.size()),
+                            mcse_gross=g2.gross_full.std(ddof=1) / np.sqrt(g2.gross_full.size()),
+                            sd_net8_across_seeds=g2.net8_full.std(ddof=1),
+                            n_seeds=g2.net8_full.size())).reset_index()
+    MCS = MCS.rename(columns={'rule_id': 'rule'})
+    INC = INC.merge(MCS, on=['rule', 'profile'], how='left')
 if len(INC): INC.to_csv(os.path.join(SUM, 'random_controls.csv'), index=False)
 P('random_controls.csv %d 行' % len(INC))
 
 # ---------------- 两层 (日期 + MC) 敏感性: F3 与软起点 ----------------
 two_rows = []
 if TWO:
-    Dcnt = np.zeros((Tn, NBOOT), np.float32)
-    for j in range(NBOOT):
-        np.add.at(Dcnt[:, j], DRAWS[j], 1.0)
+    Dcnt = DCNT.astype(np.float32)
     rng2 = np.random.RandomState(sub_seed('mc'))
     for rp in sorted(TWO):
         rule, profile = rp.rsplit('@', 1)
@@ -146,7 +180,7 @@ if TWO:
         B = min(v.shape[0] for v in Xs.values())
         Xfull = np.zeros((B, Tn), np.float32)
         for s2, v in Xs.items(): Xfull[:, segidx[s2]] = v[:B]
-        M = np.nan_to_num(Xfull) @ Dcnt / np.maximum(Dcnt.sum(axis=0), 1)      # (B, NBOOT)
+        M = (np.nan_to_num(Xfull) @ Dcnt) / DEN                                # (B, NBOOT), 与 boot_mean 同分母
         y = boot_mean(NET[real].values)
         w = rng2.multinomial(B, np.full(B, 1.0 / B), size=NBOOT).T.astype(np.float32) / B
         rnd = (M * 252 * 100.0 * w).sum(axis=0)
@@ -164,16 +198,18 @@ econ = [c for c in cols if str(FULL.loc[c, 'kind']) in ('core', 'hard', 'composi
 fams = {}
 for fam, ref in (('F1', R1), ('F2', R2)):
     if ref not in NET.columns: continue
-    D = np.stack([boot_mean(NET[c].values - NET[ref].values) for c in econ])
-    obs = np.array([float(np.nanmean(NET[c].values - NET[ref].values)) * 252 * 100 for c in econ])
+    Xd = NET[econ].values - NET[[ref]].values
+    D = boot_mat(Xd)
+    obs = np.nanmean(Xd, axis=0) * 252 * 100
     fams[fam] = band(obs, D.T, econ, fam)
 kids = [c for c in econ if isinstance(FULL.loc[c, 'parent'], str)
         and FULL.loc[c, 'parent'] in NET.columns and str(FULL.loc[c, 'kind']) != 'core']
 tr = [(c, c + '#trim') for c in kids if (c + '#trim') in NET.columns]
 if tr:
-    D = np.stack([boot_mean(NET[a].values - NET[b].values) for a, b in tr])
-    obs = np.array([float(np.nanmean(NET[a].values - NET[b].values)) * 252 * 100 for a, b in tr])
-    fams['F4'] = band(obs, D.T, [a for a, _ in tr], 'F4')
+    Xd = NET[[a for a, _ in tr]].values - NET[[b for _, b in tr]].values
+    D = boot_mat(Xd)
+    obs = np.nanmean(Xd, axis=0) * 252 * 100
+    fams["F4"] = band(obs, D.T, [a for a, _ in tr], "F4")
 if len(INC):
     sel = INC.dropna(subset=['increment'])
     fams['F3'] = pd.DataFrame(dict(family='F3', name=sel.rule + '@' + sel.profile,
@@ -186,9 +222,10 @@ for c in soft:
     hardc = '%s|%s' % (par, st)
     if hardc in NET.columns: sp.append((c, hardc))
 if sp:
-    D = np.stack([boot_mean(NET[a].values - NET[b].values) for a, b in sp])
-    obs = np.array([float(np.nanmean(NET[a].values - NET[b].values)) * 252 * 100 for a, b in sp])
-    fams['F5'] = band(obs, D.T, [a for a, _ in sp], 'F5')
+    Xd = NET[[a for a, _ in sp]].values - NET[[b for _, b in sp]].values
+    D = boot_mat(Xd)
+    obs = np.nanmean(Xd, axis=0) * 252 * 100
+    fams["F5"] = band(obs, D.T, [a for a, _ in sp], "F5")
 if fams:
     allf = pd.concat(fams.values(), ignore_index=True)
     allf.to_csv(os.path.join(BST, 'families.csv'), index=False)
@@ -205,6 +242,7 @@ if len(INC):
                                    pos=('increment', lambda z: float((z > 0).mean())),
                                    t_median=('t_increment', 'median'),
                                    mcse_median=('mcse', 'median'),
+                                   mcse_p95=('mcse', lambda z: float(z.quantile(0.95))),
                                    mcse_gt_010=('mcse', lambda z: float((z > 0.10).mean())))
     P(g.to_string(float_format=lambda z: '%+.4f' % z))
     if 'prefix_drift_64_128' in INC.columns:
