@@ -90,18 +90,27 @@ def main():
                         new40_blood_in_H=hm['new40_blood_in_H'],
                         declared_diff=hm['declared_diff'], frozen_at=hm['frozen_at']),
         freeze_history=dict(
-            note=('H manifest 在【任何块开跑之前】重生成过两次, 每次都整表重算并覆盖 '
-                  'H_manifest_frozen.json, 所以中间两版的 sha256 没有留档 —— 这里如实记时序边界。'
-                  '两次都不是"看过结果再改格", 证据是下面的时间戳。'),
+            note=('H manifest 在【任何块开跑之前】重生成过, 每次整表重算并覆盖 '
+                  'H_manifest_frozen.json, 所以中间版本的 sha256 没有留档。'
+                  '在案的触发原因是 limit_register 的 F3 与 F4 (都是冻结前自查出的 ID / 路径 '
+                  '规范化问题, 都必须整表重编号); 除这两条外没有别的书面记录, '
+                  '所以【不另外声称】改过几次、为什么改 —— 真正需要成立的是下面的时序边界。'),
             revisions=[
-                dict(seq=1, reason='H5 去掉 matchN 变体 (与 H5 的批次定义重复, 会重复计数)',
-                     sha256='(已被覆盖, 未留档)', before_any_block_output=True),
-                dict(seq=2, reason=("把 _core / _veto 直接挂到描述符行上 "
-                                    "(块内运行不再走 parse_cfg, 避免重解析歧义)"),
-                     sha256='(已被覆盖, 未留档)', before_any_block_output=True),
+                dict(seq=1, reason=('F3: e6g_desc.core_id_g 对换腿位置不敏感, H1 的 1,544 个 '
+                                    '描述符塌成 992 个唯一 ID; 改为把有序腿表写进 ID 后整表重编号'),
+                     source='limit_register.md F3', sha256='(已被覆盖, 未留档)',
+                     before_any_block_output=True),
+                dict(seq=2, reason=('F4: e6g_core.path_key 没规范化否决腿序 '
+                                    '(否决腿是"或"关系, cr5+cvr_1d 与 cvr_1d+cr5 同路径); '
+                                    '加 canon_veto() 后唯一真实路径数变化, 整表重算'),
+                     source='limit_register.md F4', sha256='(已被覆盖, 未留档)',
+                     before_any_block_output=True),
                 dict(seq=3, reason='最终冻结', sha256=hm['descriptor_id_sha256'],
                      frozen_at=hm['frozen_at'], before_any_block_output=True),
             ],
+            unrecorded=('中间版本的 sha256 与确切重生成次数无法从产物复原; '
+                        '本字段只主张"冻结早于第一个块产物、也早于第一个 T0-74 产物", '
+                        '这一条由下面的时间戳独立支持。'),
             ordering_evidence=dict(
                 guard_attack_tests_at='2026-09-11 12:01:56',
                 selftests_at='2026-09-11 12:27:13 ~ 12:27:57',
