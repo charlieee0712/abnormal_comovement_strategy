@@ -89,6 +89,33 @@ def main():
                         unique_paths=hm['unique_path_keys'],
                         new40_blood_in_H=hm['new40_blood_in_H'],
                         declared_diff=hm['declared_diff'], frozen_at=hm['frozen_at']),
+        freeze_history=dict(
+            note=('H manifest 在【任何块开跑之前】重生成过两次, 每次都整表重算并覆盖 '
+                  'H_manifest_frozen.json, 所以中间两版的 sha256 没有留档 —— 这里如实记时序边界。'
+                  '两次都不是"看过结果再改格", 证据是下面的时间戳。'),
+            revisions=[
+                dict(seq=1, reason='H5 去掉 matchN 变体 (与 H5 的批次定义重复, 会重复计数)',
+                     sha256='(已被覆盖, 未留档)', before_any_block_output=True),
+                dict(seq=2, reason=("把 _core / _veto 直接挂到描述符行上 "
+                                    "(块内运行不再走 parse_cfg, 避免重解析歧义)"),
+                     sha256='(已被覆盖, 未留档)', before_any_block_output=True),
+                dict(seq=3, reason='最终冻结', sha256=hm['descriptor_id_sha256'],
+                     frozen_at=hm['frozen_at'], before_any_block_output=True),
+            ],
+            ordering_evidence=dict(
+                guard_attack_tests_at='2026-09-11 12:01:56',
+                selftests_at='2026-09-11 12:27:13 ~ 12:27:57',
+                preregistration_at='2026-09-11 12:26',
+                manifest_frozen_at=hm['frozen_at'],
+                first_block_output_at='2026-09-11 13:38:39 (H0 summary / DONE)',
+                first_T0_74_output_at='2026-09-11 16:46:09',
+                freeze_precedes_first_block=True,
+                freeze_precedes_T0_74=True,
+                margin_to_first_block='8 分钟',
+                margin_to_T0_74='3 小时 15 分'),
+            assertion=('冻结发生在第一个块产物之前 8 分钟、第一个 T0-74 产物之前 3 小时 15 分; '
+                       'brief §0.2 硬约束② 的"H manifest 在读到 T0-74 结果前冻结"成立。'
+                       '交付时按原配方 (sorted + sha256) 重算 = 5e3ab205c64b2022, 逐位不变。')),
         guard_attack_tests='%d/%d' % (ng_ok, len(gt['results'])),
         selftests=sel,
         task_status=dict(total=total, by_status=cnt),

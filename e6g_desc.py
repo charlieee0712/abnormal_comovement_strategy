@@ -215,10 +215,15 @@ def parse_cfg(cfg_id):
         core['sel'] = suf['sel']
         if suf['sel'] == 'RANKBUDGET':
             core['depth'] = core.get('s') if core['kind'] in ('single', 'mean') else core.get('b')
-    if suf.get('tf'):
+    # 【修正 F7, 交付后】~tf: / ~dir: 是「全腿同值」的简写後缀; 但当核心带 {legs:...}
+    # 花括号块时 parse_core 已经逐腿解出 tfs/dirs, 后缀会把逐腿值抹平成全 lo/全同变换。
+    # 花括号块更具体, 优先; 后缀只在核心没给逐腿值时兜底。
+    # (核查: B/B1_paths_EXPANDED.json 的 86 个被选配置里 ~dir:lo 出现 0 次,
+    #  本轮所有已交付数字不受影响 —— 这是给下一轮的潜在缺陷修复。)
+    if suf.get('tf') and not core.get('tfs'):
         n = len(core.get('comps') or []) or 1
         core['tfs'] = [suf['tf']] * n
-    if suf.get('dir') == 'lo':
+    if suf.get('dir') == 'lo' and not core.get('dirs'):
         n = len(core.get('comps') or []) or 1
         core['dirs'] = ['lo'] * n
     return dict(config_id=cfg_id, core=core, veto=veto, H=H, support=sup)
