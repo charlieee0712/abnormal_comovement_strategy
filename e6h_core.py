@@ -321,6 +321,31 @@ def build_raw_h(S, sp):
     return G.build_raw_g(S, sp)
 
 
+def get_pct_h(S, sp, mode='NS', direction='hi', transform='identity'):
+    """(T, Nc) bad_pct 表 —— 与 e6g_core.get_pct_g 【同一条路径】, 只把 build_raw_g
+       换成 build_raw_h 以支持新派生键。已有键结果与 get_pct_g 逐位相同 (锚在
+       e6h_anchors 的 D11)。缓存复用 S._g, 但用不同的 key 前缀避免撞车。"""
+    assert_registered_h(sp, where='get_pct_h')
+    if sp.get('role') == 'F' and sp['key'] in DERIVED:
+        key = ('E6H', sp['key'], int(sp.get('w', 1)), mode, direction, transform)
+        st = getattr(S, '_g', None)
+        if st is None:
+            st = S._g = {}
+        if key in st:
+            st[key] = st.pop(key)
+            return st[key][0]
+        raw = build_raw_h(S, sp)
+        raw = G.tf_apply(raw, transform)
+        if raw.shape != S.pool0.shape or not raw.index.equals(S.pool0.index):
+            raw = raw.reindex(index=S.pool0.index, columns=S.pool0.columns)
+        cache, info = F.neu_cache(raw, S.pool0, S.log_mcap, S.icodes_neu, mode)
+        P = G.pct_dense_dir(cache, S.dates, S.ccolpos, S.Nc, direction)
+        st[key] = (P, dict(key=sp['key'], mode=mode, direction=direction,
+                           transform=transform, derived=True, protected=True))
+        return P
+    return G.get_pct_g(S, sp, mode=mode, direction=direction, transform=transform)
+
+
 def seg(pname, support='legacy_all', verbose=False):
     S = G.seg(pname, support=support, verbose=verbose)
     setattr(S, _DERIV_CACHE_ATTR, {})
