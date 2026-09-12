@@ -46,7 +46,7 @@ E6G_KW, E6G_TW, E6G_DEP = {1, 2, 3, 5, 10}, {20, 30, 40, 60, 80}, {25, 30, 35}
 
 
 def grid():
-    import e6g_desc as D
+    import e6f_desc as D          # e6g_expand 里的 D 就是 e6f_desc (已核)
     out = []
     for kw, tw, bw, dep, k1, k2 in itertools.product(KW, TW, BW, DEP, KS, KS):
         spK = F.spec('K', kw, est='MA', eps=1e-4)
