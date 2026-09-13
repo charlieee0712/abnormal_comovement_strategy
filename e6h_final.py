@@ -76,10 +76,19 @@ TASKS = [
     ('STATS_stepdown', '', 0, 'DEFERRED'),
     ('R0_subject_clustering', '', 0, 'DEFERRED'),
     ('A_record_A_v1', '', 0, 'DEFERRED'),
-    ('B_record_B', 'registration/record_B_draft.md', 1, 'BLOCKED_BY_GATE'),
-    ('POST_first_look', '', 0, 'BLOCKED_BY_GATE'),
-    ('REPORT_part2', '', 0, 'BLOCKED_BY_GATE'),
-    ('L_new_route_grid', '', 0, 'BLOCKED_BY_GATE'),
+    ('B_record_B', 'registration/record_B_approved.json', 1, 'SUCCEEDED'),
+    ('POST_first_look', 'post_segments/SEALED_post_*.csv', 2, 'SUCCEEDED'),
+    ('POST_receipts', 'post_segments/SEALED_receipt_*.json', 2, 'SUCCEEDED'),
+    ('POST_extra', 'post_segments/post_extra_*.csv', 2, 'SUCCEEDED'),
+    ('POST_family_bands', 'post_segments/post_family_bands_*.csv', 2, 'SUCCEEDED'),
+    ('POST_selection', 'post_segments/post_selection_*.csv', 2, 'LIMIT'),
+    ('POST_randoms', 'random_registry/random_refs_post_*.csv', 2, 'SUCCEEDED'),
+    ('POST_first_look_receipt', 'first_look_receipts/first_look_receipt.json', 1,
+     'SUCCEEDED'),
+    ('REPORT_part2', 'REPORT_part2.md', 1, 'SUCCEEDED'),
+    ('REPORT_part3', 'REPORT_part3.md', 1, 'SUCCEEDED'),
+    ('L_new_route_grid', 'L/L_newroute_grid_*.csv', 4, 'SUCCEEDED'),
+    ('L_new_route_b0_anchor', 'L/L_newroute_b0_anchor_*.json', 4, 'SUCCEEDED'),
     ('DOC_coverage', 'coverage.csv', 1, 'SUCCEEDED'),
     ('DOC_limit_register', 'limit_register.md', 1, 'SUCCEEDED'),
     ('DOC_source_corrections', 'source_corrections_E6h.md', 1, 'SUCCEEDED'),
@@ -153,15 +162,19 @@ def main():
                                  config_segments=dm['total_config_segments']),
         task_status=dict(total=len(ts), by_status=cnt, total_result_rows=total_rows),
         coverage=cv,
-        reports=['REPORT_R0.md', 'REPORT_part1.md'],
-        blocked=['REPORT_part2', 'REPORT_part3', '后段首次观察', 'L 新主路线补格'],
-        completion='PARTIAL_WITH_LIMITS',
+        reports=['REPORT_R0.md', 'REPORT_part1.md', 'REPORT_part2.md',
+                 'REPORT_part3.md'],
+        blocked=[],
+        completion='COMPLETE_WITH_LIMITS',
         completion_note=(
-            '推导段与 carried L/T 全部完成; **后段被记录 B 这道用户闸挡住**, '
-            'REPORT_part2 / part3 未出。coverage 有 %d 条 deferred、%d 条 changed、'
-            '%d 条 blocked_by_gate、%d 条 unavailable, 逐条理由在 coverage.csv。'
+            '记录 B 已由用户批准 (2026-09-13 11:39:52, 清单 SHA c6a95478e4b18097); '
+            '两后段按同一冻结清单一次算完并封存, 三份 REPORT 全部交付。'
+            'coverage 有 %d 条 deferred、%d 条 changed、%d 条 unavailable '
+            '(blocked_by_gate 已清零), 逐条理由在 coverage.csv; '
+            'limit_register.md 记 9 条 LIMIT。'
+            '**后段不是 OOS** —— 路线在看过 E6g 与 R0 之后选定, E7 才是唯一 OOS。'
             % (cv.get('deferred', 0), cv.get('changed', 0),
-               cv.get('blocked_by_gate', 0), cv.get('unavailable', 0))),
+               cv.get('unavailable', 0))),
     )
     with open(os.path.join(R, 'manifest.json'), 'w') as fh:
         json.dump(man, fh, indent=1, ensure_ascii=False)
