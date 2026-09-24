@@ -82,6 +82,11 @@ def main():
              basis='plan §6.4', ref='statistics/zmap_post_escalation_plan_r*.csv'),
         dict(event='首次观察封存回执', when=fl.get('written_at', 'pending'), seen='回执之前无后段数值读取',
              changed='两后段产物逐文件 sha 封存', basis='brief §7 / plan Stage 3', ref='registry/first_look_receipts.json'),
+        dict(event='B 后事后补充（part3 §0 母体基线 / §1b 分族读数 / §2 C1 资本分解）', when='2026-09-25（47 时间）',
+             seen='全部推导段与后段结果（part2 / part3 已交付之后）',
+             changed='只重新汇总已封存账户：按 A0 事前定义的族汇总、按 α / H 分组、α ≤ .25 且 H ≥ 10 的事后切片、C1 部署视图资本分解；'
+                     'part3 §2 读法与摘要据此修订（C1 人数效应主体是部署量）；不改任何登记读数、不新增账户',
+             basis='用户要求补充报告；读法标"事后"', ref='reports/E6i_REPORT_part3.md §0 / §1b / §2；carried/summary/C1_T9_capital*.csv'),
     ]
     I.atomic_write_csv(os.path.join(rg, 'exposure_ledger.csv'), pd.DataFrame(ex))
     st3p = os.path.join(rg, 'stage3_status_table.csv')
@@ -109,6 +114,8 @@ def main():
                'done' if len(st3) else 'pending', na, ft),
            '| L14 | C1（N x 行业宽度） | %s | receipt %d 个 | 见 part3 |' % ('done' if len(c1) else 'pending', len(c1)),
            '| L15 | C2（冲击成本透镜） | %s | receipt %d 个 | 见 part3 |' % ('done' if len(c2) else 'pending', len(c2)),
+           '| L16 | C1 资本分解 | LIMIT | 严格视图（两格同日可行日）的逐日投入资金没有保存 → 分解只能在部署视图（全日历）上做 | 两视图支持不同、差的大小不同；part3 §2 并列给出 |',
+           '| L17 | part3 §0 / §1b / §2 资本分解 | changed | B 后事后补充（看过后段后做的汇总；α / H 切片事后选） | 不改登记读数；读法标"事后"；见 exposure_ledger |',
            '']
     open(os.path.join(R, 'reports', 'limit_register.md'), 'w', encoding='utf-8').write('\n'.join(lim))
     # plan §12.1: A1 没做就写明没做, 不写 "A1 reviewed; no change", 也不生成 hypotheses_A1.json

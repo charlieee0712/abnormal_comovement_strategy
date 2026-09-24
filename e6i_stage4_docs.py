@@ -78,6 +78,11 @@ def main():
     L += ['',
           '**同对象多支**：K 腿的四个成员互为替代（同一槽位同一时刻只混入一个），不叠加；保留多支是为了在 E7 里区分"响应族整体"与"平滑的原 K"（K_MA3）两种解释，'
           '避免把旧信息的平滑当作新测量的功劳。\n',
+          '**族层读数（part3 §1b，B 后事后补充；族是 A0 事前定义的）**：K 槽位全网格下 %s。'
+          '**登记方式备选**：E7 也可以按族登记（族内成员与配置事前固定、读族中位），而不是按上表成员——按成员挑的挑选偏差更大；两种方式由规划 session 与用户选。\n' % '；'.join(
+              '%s 推导 %s、后段 %s / %s' % (fam_, fx(med(g_, 'deriv')), fx(med(g_, 'p1')), fx(med(g_, 'p2'))) for fam_, g_ in (
+                  (fam_, M[(M.route_id == 'RK') & M.direction_role.isin(PRIM) & (M.policy == 'FALLBACK') & (M.family == fam_)])
+                  for fam_ in ('amount_response', 'turnover_response', 'source_bridge', 'log_repr'))),
           '**不进短名单但保留在研究目录的**：T 的 20 日绝对尺度成员（成员层两期中位为正，但在短名单同一配置 SLOT FALLBACK α ≤ .25、H ≥ 10 下两后段中位为 %s——'
           '2024-26 为负或接近 0，证据不足）；C 的 40 日成员（只后段为正）；V_idio20（只后段为正）；K_rar 的竞争方向（需要重新登记方向）；四臂组合（交互为正来自亏损不叠加）。\n'
           % '；'.join(tnote)]
@@ -99,7 +104,9 @@ def main():
           '| 线 / 子杠杆 | 本轮证据 | 上轮状态 | 提议状态 | 升降条件 |', '|---|---|---|---|---|',
           '| 因子端迭代（八族估计量 x 策略适配） | 八轴 276 个目录成员（记录 B 解封 236 个）；35,384 个主描述符推导与后段两期全跑；成员层两期为正的 11 个成员都在 K（响应族与源桥）与 T（20 日绝对尺度）两轴（part3〔P3-BOTH〕） | headline | **headline（收窄）** | '
           '收窄到 K / T 两族的构造细化（新旧排序分歧分层、水平匹配后的离散、长 H）与 E7 事前登记准备；若下一轮细化后仍无后段可分辨的增量 → carried |',
-          '| K 响应族（SLOT 部分混入） | %s | （新） | 留在 headline 子线 | 见候选库提案短名单 |' % rt('RK', direction_role=list(PRIM), policy='FALLBACK'),
+          '| K 槽位（9 族部分混入） | %s | （新） | 留在 headline 子线 | 见候选库提案短名单与 part3 §1b |' % rt('RK', direction_role=list(PRIM), policy='FALLBACK'),
+          '| 其中响应族（amount_response / turnover_response） | %s | （新） | headline 子线的主攻口径 | 按族事前固定成员与配置登记 E7；新旧排序分歧分层 |' % rt(
+              'RK', direction_role=list(PRIM), policy='FALLBACK', family=['amount_response', 'turnover_response']),
           '| T 小权重加 / 20 日复合 | 小权重 %s；复合 TPAIR %s | （新） | 小权重留 headline 子线；复合 → park（P31） | 水平匹配离散登记后重测复合 |' % (
               rt('RT', direction_role='primary', policy='FALLBACK'), rt('TPAIR')),
           '| V 保留集删除 | %s | （新） | park（P26） | 事前登记的市场状态条件 |' % rt('RV', direction_role='primary'),
@@ -111,7 +118,8 @@ def main():
               rt('RC', direction_role='primary', role='SLOT'), rt('RC', direction_role='primary', role='FOCAL_NEW')),
           '| 摩擦边缘替换（RL） | %s | （新） | park（P33） | κ 校准或可成交数据 |' % rt('RL'),
           '| M2 形状校准 | 两期对母体接近 0；零修改的 (程序 x 年) 占比后段 46% / 77% | （新） | park（P32） | 事前固定形状的角色（Q17） |',
-          '| 池子扩张分离（C1） | 见 part3 §2 | carried | carried（结论见 part3，交规划 session 定） | — |',
+          '| 池子扩张分离（C1） | 严格视图下人数 100 → 250 两后段为正；资本分解：大部分来自持仓名数 / 投入资金（部署量），选股部分依赖分配口径（part3 §2） | carried | '
+          'carried（下一步先做同资本口径的 N / B 对比） | 同资本口径仍有稳定的选股部分 → 再考虑把可选池人数登记为母体构造参数 |',
           '| 成本 / 持有期（C2 冲击透镜） | 见 part3 §3 | carried | carried | κ 校准 |',
           '| 信号线（C3 描述） | R0 §9 | carried（零算力） | carried | 另立对象与授权 |', '']
     open(os.path.join(R, 'reports', 'line_state_proposal.md'), 'w', encoding='utf-8').write('\n'.join(LS) + '\n')
