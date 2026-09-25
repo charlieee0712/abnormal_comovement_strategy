@@ -1,0 +1,38 @@
+# E6i_MIRROR.md5 —— E6i 轮 REPORT 终版冻结清单（VERIFY §C-2；执行端，2026-09-26 01:52 47 时间 / 2026-09-25 本地）
+# 冻结对象：五份 REPORT + 记录 B 草稿 + brief（结果目录 brief_copy.md）+ plan（结果目录 PLAN_COPY.md）。此后不重生成已交付文件；交付后的补充另起 E6i_REPORT_supplement_<k>.md。
+# 位置：RD = 结果目录 20260923_0254_E6i_measurement_need_fit；EB47 = 47 仓库 exec_briefs；EBLOCAL = 本地工作站 exec_briefs。47 仓库没有 exec_briefs/plans/，plan 只有 RD 与 EBLOCAL 两处。
+# 列：md5  sha256  位置  文件
+731344308015f5896dc8a30feef3ad06  7790f4c5341225c56a9dbe58e1130fbaa1c7c411f9572df3af56d33a5d39586a  RD  reports/E6i_REPORT_R0.md
+731344308015f5896dc8a30feef3ad06  7790f4c5341225c56a9dbe58e1130fbaa1c7c411f9572df3af56d33a5d39586a  EB47  exec_briefs/E6i_REPORT_R0.md
+731344308015f5896dc8a30feef3ad06  7790f4c5341225c56a9dbe58e1130fbaa1c7c411f9572df3af56d33a5d39586a  EBLOCAL  exec_briefs/E6i_REPORT_R0.md
+86ebbd7f66b7acb2c95bd06a82b59b79  ad44f38c3ae4272ab6caaac836f55df95b088508a401e8e54f48f0134ce7e4d5  RD  reports/E6i_REPORT_part1.md
+86ebbd7f66b7acb2c95bd06a82b59b79  ad44f38c3ae4272ab6caaac836f55df95b088508a401e8e54f48f0134ce7e4d5  EB47  exec_briefs/E6i_REPORT_part1.md
+86ebbd7f66b7acb2c95bd06a82b59b79  ad44f38c3ae4272ab6caaac836f55df95b088508a401e8e54f48f0134ce7e4d5  EBLOCAL  exec_briefs/E6i_REPORT_part1.md
+1d6d44095042ca06356e3982c26e63db  0a082b65949abc038d7d9f8c925ba95f6d6920fb221bee016454975677fb2590  RD  reports/E6i_REPORT_part1b.md
+1d6d44095042ca06356e3982c26e63db  0a082b65949abc038d7d9f8c925ba95f6d6920fb221bee016454975677fb2590  EB47  exec_briefs/E6i_REPORT_part1b.md
+1d6d44095042ca06356e3982c26e63db  0a082b65949abc038d7d9f8c925ba95f6d6920fb221bee016454975677fb2590  EBLOCAL  exec_briefs/E6i_REPORT_part1b.md
+d0a3c2ae85d1762ea58dd401fb2cdb2c  6b6ccdb70f411638523cd4a046cfafc8f28734896ba131464445b52d9852c3d5  RD  reports/E6i_REPORT_part2.md
+d0a3c2ae85d1762ea58dd401fb2cdb2c  6b6ccdb70f411638523cd4a046cfafc8f28734896ba131464445b52d9852c3d5  EB47  exec_briefs/E6i_REPORT_part2.md
+d0a3c2ae85d1762ea58dd401fb2cdb2c  6b6ccdb70f411638523cd4a046cfafc8f28734896ba131464445b52d9852c3d5  EBLOCAL  exec_briefs/E6i_REPORT_part2.md
+34aafe2f6891113a70cf6143044a75c6  a68eb4de1b9428f13498581e93993211de286bd3b7ed4648c22a589d3140ca18  RD  reports/E6i_REPORT_part3.md
+34aafe2f6891113a70cf6143044a75c6  a68eb4de1b9428f13498581e93993211de286bd3b7ed4648c22a589d3140ca18  EB47  exec_briefs/E6i_REPORT_part3.md
+34aafe2f6891113a70cf6143044a75c6  a68eb4de1b9428f13498581e93993211de286bd3b7ed4648c22a589d3140ca18  EBLOCAL  exec_briefs/E6i_REPORT_part3.md
+1219d968684005f616c80fdf04e70cf6  f1cb751e6ed8d52597453524d0eacd928e46f9794e189d6189d0ce6eecef4fbd  RD  reports/E6i_record_B_draft.md
+1219d968684005f616c80fdf04e70cf6  f1cb751e6ed8d52597453524d0eacd928e46f9794e189d6189d0ce6eecef4fbd  EB47  exec_briefs/E6i_record_B_draft.md
+1219d968684005f616c80fdf04e70cf6  f1cb751e6ed8d52597453524d0eacd928e46f9794e189d6189d0ce6eecef4fbd  EBLOCAL  exec_briefs/E6i_record_B_draft.md
+89f0681660098499fbb4916464f1d9c6  5475d97c2d70aa05a5941bf79562e518c7e2a5f11bd98d0c5023ad3bd81ada59  RD  brief_copy.md
+89f0681660098499fbb4916464f1d9c6  5475d97c2d70aa05a5941bf79562e518c7e2a5f11bd98d0c5023ad3bd81ada59  EB47  exec_briefs/E6i_measurement_need_fit.md
+89f0681660098499fbb4916464f1d9c6  5475d97c2d70aa05a5941bf79562e518c7e2a5f11bd98d0c5023ad3bd81ada59  EBLOCAL  exec_briefs/E6i_measurement_need_fit.md
+69cfec2182043ca2718acf681f313ee1  cf9ce859575401dc2f3cd077c35c303af9aa90a0503250e2397cc211720039b7  RD  PLAN_COPY.md
+69cfec2182043ca2718acf681f313ee1  cf9ce859575401dc2f3cd077c35c303af9aa90a0503250e2397cc211720039b7  EBLOCAL  exec_briefs/plans/E6i_plan_web_final.md
+# ---- 第二节：VERIFY 交付物（2026-09-26 03:56 47 时间追加；第一节不变）----
+# 位置：RD = 结果目录 verify/；EB47 = 47 仓库 exec_briefs；EBLOCAL = 本地工作站 exec_briefs。本文件不记录自身 hash。
+# 列：md5  sha256  位置  文件
+c030b0109f6b33b60342639223b3e98b  7d4ca09dfa265559805c12e6616d27a9f0890c64123a7d4df6588a2d55e49a19  RD  verify/E6i_lessons_delta.md
+c030b0109f6b33b60342639223b3e98b  7d4ca09dfa265559805c12e6616d27a9f0890c64123a7d4df6588a2d55e49a19  EB47  exec_briefs/E6i_lessons_delta.md
+c030b0109f6b33b60342639223b3e98b  7d4ca09dfa265559805c12e6616d27a9f0890c64123a7d4df6588a2d55e49a19  EBLOCAL  exec_briefs/E6i_lessons_delta.md
+beffcb332d7be914384a0a5941a7cf10  b1c718c59d59d5263f523b7efc12b2eee8971e90e7971105e85623d6fef8127d  RD  verify/E6i_VERIFY_report.md
+beffcb332d7be914384a0a5941a7cf10  b1c718c59d59d5263f523b7efc12b2eee8971e90e7971105e85623d6fef8127d  EB47  exec_briefs/E6i_VERIFY_report.md
+beffcb332d7be914384a0a5941a7cf10  b1c718c59d59d5263f523b7efc12b2eee8971e90e7971105e85623d6fef8127d  EBLOCAL  exec_briefs/E6i_VERIFY_report.md
+# 只读程序（结果目录副本；仓库副本 verify_e6i_readonly.py 随本次提交，内容相同）
+eb5745d9178246c9698bd633fc1fda16  eb75033fcbd9e649749c796c9a7c70d8c822290aa9d186c8739ac3da18fd51aa  RD  verify/verify_e6i_readonly.py
