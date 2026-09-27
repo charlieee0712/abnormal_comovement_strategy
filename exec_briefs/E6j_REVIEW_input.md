@@ -1,0 +1,145 @@
+# E6j REVIEW_input —— 事实块索引（执行端，交付随附）
+
+用途：给独立复核（协议 v1.1：决策端 `E6j_VERIFY_brief.md` → 执行端 V → 决策端 D + REVIEW）的全部事实表 / 账本 / 登记 / 版本 / 源代码路径与 sha256；正文之外的事实块也在此登记。结果目录 `results/20260927_0038_E6j_k_two_dimension_pilot/`。
+
+## 1. 报告与 query_id
+- `reports/E6j_REPORT_R0.md`（sha256 e3cae653ba2a8194）：20 个 query_id（R0-Q00、R0-Q01、R0-Q02、R0-Q03、R0-Q04、R0-Q05、R0-Q06、R0-Q07、R0-Q08、R0-Q09、R0-Q10、R0-Q11、R0-Q12、R0-Q13、R0-Q14、R0-Q15、R0-Q16、R0-Q17、R0-Q18、R0-Q19）
+- `reports/E6j_REPORT_carried.md`（sha256 07b34e0f6fda2090）：5 个 query_id（CAR-Q01、CAR-Q02、CAR-Q03、CAR-Q04、CAR-Q05）
+- `reports/E6j_REPORT_part1.md`（sha256 570491ad60d90d85）：14 个 query_id（P1-Q01、P1-Q02、P1-Q03、P1-Q04、P1-Q05、P1-Q06、P1-Q07、P1-Q08、P1-Q09、P1-Q10、P1-Q11、P1-Q12、P1-Q13、P1-Q14）
+- `reports/E6j_REPORT_part1b.md`（sha256 cb383ed70e473558）：6 个 query_id（P1B-Q01、P1B-Q02、P1B-Q03、P1B-Q04、P1B-Q05、P1B-Q06）
+- `reports/E6j_REPORT_part2.md`（sha256 ca698ba886105eba）：7 个 query_id（P2-Q01、P2-Q02、P2-Q03、P2-Q04、P2-Q05、P2-Q06、P2-Q07）
+- `reports/E6j_REPORT_part3.md`（sha256 2fd22fa2ffd0f25d）：35 个 query_id（P3-Q01、P3-Q02、P3-Q03、P3-Q04、P3-Q05、P3-Q06、P3-Q07、P3-Q08、P3-Q09、P3-Q10、P3-Q11、P3-Q12、P3-Q13、P3-Q14、P3-Q15、P3-Q16、P3-Q17、P3-Q18、P3-Q19、P3-Q20、P3-Q21、P3-Q22、P3-Q23、P3-Q24、P3-Q25、P3-Q26、P3-Q27、P3-Q28、P3-Q29、P3-Q30、P3-Q31、P3-Q32、P3-Q33、P3-Q34、P3-Q35）
+
+## 2. 登记、授权、封存
+- `registration/B_package_manifest.json`（b06b967ff7afacba）
+- `registration/P_package_manifest.json`（46e35aadf9a34feb）
+- `registration/a1_auto.json`（82c83eb60f1bad67）
+- `registration/code_amendment_20260927_fast.json`（19b2d012f075f270）
+- `registration/policy_P_operational_addendum.json`（5c5e2217df27e374）
+- `registration/preregistration_B.md`（3bb9f8aa853bd208）
+- `registration/preregistration_P.md`（d8f54401155990d1）
+- `registration/record_B_conditions_receipt.json`（70cb154a6f78755a）
+- `registration/record_B_draft_objects.csv`（9d31e6c5be59eab7）
+- `registration/record_B_preauthorized_E6j.json`（490b0de16ea9f635）
+- `registration/seal_B_post.json`（7ae38edea02a5e72）
+- `registration/seal_P.json`（eac5dbc90a44ebc4）
+- `registration/selection_exposure_ledger.csv`（c64a9065707819aa）
+- `registry/a0_manifest.json`（a174f18f6ece3c5a）
+- `registry/code_changes/20260927_fast/after/e6j_engine.py`（e4d1a50200ccf630）
+- `registry/code_changes/20260927_fast/after/e6j_fast.py`（2a571124af525f41）
+- `registry/code_changes/20260927_fast/after/e6j_run_brand.py`（dca210a1233ebb2e）
+- `registry/code_changes/20260927_fast/after/e6j_run_prand.py`（19858b7dbbe3fa6f）
+- `registry/code_changes/20260927_fast/before/e6j_engine.py`（1b28fef753ab3396）
+- `registry/code_changes/20260927_fast/before/e6j_run_brand.py`（2706aefc4e03be16）
+- `registry/code_changes/20260927_fast/before/e6j_run_prand.py`（344c44699c34aff8）
+- `registry/code_changes/20260927_fast/before/e6j_run_prand.py.next`（0606f1fd6a322c44）
+- `registry/code_changes/20260927_fast/e6j_engine.py.diff`（58c51d7e5500eefc）
+- `registry/code_changes/20260927_fast/e6j_run_brand.py.diff`（8b04e79240d79323）
+- `registry/code_changes/20260927_fast/e6j_run_prand.py.diff`（7e1f7414a9e7aee7）
+- `registry/code_changes/20260927_fast/e6j_run_prand_vs_next.diff`（9fd6af98c410eb8a）
+- `registry/code_changes/20260927_fast/sha256.txt`（f9351a4d2897734e）
+- `registry/controls.csv`（83d18c67fe1d8cdc）
+- `registry/cs_B.csv`（bca3202976dcdb4b）
+- `registry/cs_P.csv`（46a5d60aa6e756df）
+- `registry/descriptors_B.csv`（bd7096d6ebbae5d0）
+- `registry/descriptors_P.csv`（4887c08a44cf9b44）
+- `registry/exposure_ledger.csv`（366f101d77ed5720）
+- `registry/question_to_objects.csv`（93a8f769f342cb36）
+- `registry/rows_B.csv`（16174a599dfa5106）
+- `registry/task_to_objects.csv`（0d41de2bbee66489）
+- `registry/trade_calendar.csv`（ea96de50df2be770）
+
+## 3. 结果与账本（目录级）
+- `anchors/`：3 个文件，2.1 MB
+- `accounts/P/`：65 个文件，232.7 MB
+- `accounts/B/`：340 个文件，3679.4 MB
+- `randoms/P/`：96 个文件，22017.8 MB
+- `randoms/B/`：741 个文件，29046.3 MB
+- `results_P/`：16 个文件，2.5 MB
+- `results_B/`：10 个文件，48.3 MB
+- `results/`：3 个文件，12.8 MB
+- `diagnostics/`：28 个文件，4.0 MB
+- `carried/`：68 个文件，20.8 MB
+- `stage0/`：54 个文件，0.3 MB
+- `stage1/`：2 个文件，0.1 MB
+- `checks/`：16 个文件，0.2 MB
+- `cache/`：880 个文件，13361.6 MB
+
+## 4. 源代码（本轮新增 e6j_*，只读复用的源文件）
+- `e6j_a0.py`（750f8293d299c919）
+- `e6j_a1_auto.py`（a854c01e45bdd11a）
+- `e6j_addendum_policy_mc.py`（883af6f767ac4cb9）
+- `e6j_bands.py`（6d2eeb5ed42cc0a7）
+- `e6j_bands_b.py`（268bb913ec48666f）
+- `e6j_boot.py`（9e45b5e742dba154）
+- `e6j_carried.py`（55b265e38c7c5a55）
+- `e6j_carried_c1.py`（a2acde9055410665）
+- `e6j_check_b_test_shard.py`（e7afea047a8210a7）
+- `e6j_core.py`（1228658b5f00bd50）
+- `e6j_deliver.py`（ee1ed1f027f72b39）
+- `e6j_diag_b.py`（8ea47a2bdd8add63）
+- `e6j_diag_p.py`（258c3017d98a3c10）
+- `e6j_diag_p_extra.py`（75b98cff1fec8e09）
+- `e6j_engine.py`（e4d1a50200ccf630）
+- `e6j_engine_anchor.py`（28c43b0d68becee4）
+- `e6j_fast.py`（2a571124af525f41）
+- `e6j_features.py`（424551cbb9eb7bb2）
+- `e6j_mc_topup.py`（49a4571d2a93115e）
+- `e6j_parents_b.py`（d02a263e90a11f8b）
+- `e6j_policy_extra.py`（3a65c4580a43ca70）
+- `e6j_policy_p.py`（6988b8e98d41e1ea）
+- `e6j_prereg.py`（e7818883d6f32544）
+- `e6j_prod.py`（51f62904063ead19）
+- `e6j_prof_brand.py`（951a2c269c0d7c37）
+- `e6j_prof_brand_stages.py`（0ad4ecfe6e67d84a）
+- `e6j_prof_stages.py`（3e1161a43baf4aed）
+- `e6j_random.py`（3921e78876d2ffa8）
+- `e6j_report.py`（9d9f80fde8a96a4f）
+- `e6j_report_b2.py`（b9a56bafe9c969c0）
+- `e6j_report_carried.py`（2d2b78f4fdea7243）
+- `e6j_report_part1.py`（d6f8dbd346811d36）
+- `e6j_report_part3.py`（acaaaa5e93676922）
+- `e6j_report_r0.py`（3f82c7b65b27f2ac）
+- `e6j_run_b.py`（be7cc0bb00fe312a）
+- `e6j_run_brand.py`（dca210a1233ebb2e）
+- `e6j_run_p.py`（34b8befeac8c9cd5）
+- `e6j_run_prand.py`（19858b7dbbe3fa6f）
+- `e6j_seal.py`（f84949ebe08874bb）
+- `e6j_slot.py`（5853a0f251dd9414）
+- `e6j_stage0_close.py`（4522aca1f9bcd7dd）
+- `e6j_stage0_features.py`（753b3e675b89210c）
+- `e6j_stage0_guard.py`（f5d1fdac275c5b59）
+- `e6j_stage0_parent_identity.py`（32310557022100c3）
+- `e6j_stage0_prod_anchor.py`（df20a1ab47d8dfb4）
+- `e6j_stage0_replay.py`（e37d6cf222fd0b5d）
+- `e6j_stage0_slot_identity.py`（3437960223815e17）
+- `e6j_stage1.py`（81809bb6cb380900）
+- `e6j_stats.py`（d210e98ca6ba5ada）
+- `e6j_stats_b.py`（040ead291a377a5c）
+- `e6j_test_fast.py`（46c6eaeae09e802c）
+- `e6j_test_fast_e2e.py`（32a241119199178d）
+- `e6j_test_pick.py`（d63522cdbac6c282）
+- `e6j_test_policy_seal.py`（632f618e27988314）
+- 源 `data_loader.py`（f61b64b03253be12，只读）
+- 源 `features_daily.py`（d48cf9f0d5b17499，只读）
+- 源 `event_study.py`（f51ce11b2f94c1f1，只读）
+- 源 `pool_screening_v2.py`（915b5897ebdeaa59，只读）
+- 源 `comprehensive_factor_diagnosis.py`（69c0ce304e4c8d69，只读）
+- 源 `export_delivery_pools_v2.py`（c2d7824c26ba2791，只读）
+- 源 `e6e_core.py`（2c9630c3ff6689c5，只读）
+- 源 `e6f_core.py`（684d77a2a4f268c2，只读）
+- 源 `e6g_core.py`（5e295002950dd23a，只读）
+- 源 `e6g_desc.py`（fa922e38a607122e，只读）
+- 源 `e6h_core.py`（3df3329c0ae4a583，只读）
+- 源 `e6h_rules.py`（53db37593f2af3c2，只读）
+- 源 `e6h_run_routes.py`（a513177ff3744a18，只读）
+- 源 `e6i_core.py`（b3d11e6b6b9ab7cd，只读）
+- 源 `e6i_ops.py`（d8d3d5268aaafe86，只读）
+- 源 `e6i_engine.py`（7f378afb91c7979e，只读）
+- 源 `e6i_features.py`（9515955fc6681863，只读）
+- 源 `e6i_s1base.py`（f9b6c0f8f5cbaf56，只读）
+- 源 `e6i_randoms.py`（11444a89fdf31f66，只读）
+- 源 `e6i_stage2.py`（cc16cef8efcd1bcb，只读）
+
+## 5. 任务回执
+- `task_status/` 共 1079 个回执；状态计数见闭包门。
