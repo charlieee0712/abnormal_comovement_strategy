@@ -16,3 +16,25 @@
 - **L14** 执行端补充 X04：Stage 0 第 3 类新算子恒等锚与 A1-auto 掩码事实在两后段于授权后同代码补算（R0 第 3 / 5 节按段分列）；后段第 3 类结果不回写 Stage 0 manifest（source_manifest 保持开工时状态）
 - **L15** 两个诊断的首版退化、由 v2 替代（v1 文件保留不删、不作读数）：衰减场景前瞻版误用同一 draw（`diagnostics/decay/decay_scenarios.csv` → `decay_scenarios_v2.csv`）；HG 跨段连续状态（X09）的上段末状态在段首预热日（门域 K = 0）被清空（`hg_continuous_<段>_<段>.csv` → `hg_continuous_v2_*.csv`，hold_init 只用于该诊断，登记账户不变）
 - **L16** 覆盖不足（登记 query 有、本轮未记账）：PM 固定配对交换数的嵌套与结构单边编辑（E6K-Q10-c）；TREFIT 第二关逐日有效样本数（E6K-Q07-b）；POST2 第二关前编辑数只以最终名单相对原父的换入近似（E6K-Q08-b）
+
+## VERIFY 阶段追加（2026-09-30；执行端；L01–L16 不改）
+
+- **L17** 同时带统计量的口径。
+  - 定义：`results/full/bootstrap/simultaneous_band_q95.csv` 的统计量是标准化 max-t，M_b = max_j |(FULL*_bj − FULL_j) / SE_j|。FULL* 是段内分层 stationary bootstrap draw 的四段 n 加权年化百分点；SE_j 是 draw 的 sd（ddof 1）；集合限于 SE > 0 且无无支持 draw 的比较。q95 以 SE 为单位。
+  - 数值：primary144 L20 3.379 / L60 3.435；all L20 4.810 / L60 4.780。逐对象同时带半宽 = q95·SE_j，primary144 L20 为年化百分点中位 .360、最大 .524。
+  - 它与逐对象 95% CI 半宽（中位 .209 / 最大 .298）单位不同，不能直接比。
+  - 同单位（未标准化 max-abs，年化百分点）的分位见 `E6k_REPORT_supplement_1.md` S1-Q01（事后口径）。不作门。
+- **L18** LEGACY_EDIT5 的"四段全无编辑"处理是实现口径（PX5 未写）。
+  - 只在有编辑日的段上判 |edit_gap_absmean_T| ≤ 5；四段都未定义时状态为字面 `N/A`，判定串里既不计失败、也不计待定。
+  - 共 140 行：PM15 α .125 四段无换入的 7 个目标 × H 1…20。
+  - 字面 `N/A` 用 pandas 默认 `read_csv` 读会变成 NaN。
+- **L19** 段均类诊断表与政策表的分母不同。
+  - 段均类（四段等权均值）：SMB 的 `D_ann` 与 `alpha_over_D`（逐段比值的均值）、CAP 的 selection / capital / one_sided、Shapley 的 `rand_net_*` 与 Shapley 差、MX-CS 块均、TAILS 的桶份额。政策表的 FULL 是四段 n 加权。
+  - CAP 定义：
+    - 两边有仓日：sel = ½(Pc + Pb)(uc − ub)，cap = ½(uc + ub)(Pc − Pb)，其中 u = E / P。
+    - 只一边有仓日：one_sided = Ec − Eb。
+    - 三列都按全段交易日取均值后 × 25,200。
+    - sel + cap + one_sided = gross 配对差（不含费用），与 FULL（8bp 净）或 FULL_sc 没有恒等关系。
+- **L20** `random_refs_<段>.csv` 中路径间方差为 0 的对象（本轮只有 OWN），`rand_sd` / `mcse` 是单遍方差式的舍入值（约 1e−7 / 7.5e−9），不是 0。
+  - 不影响 `e_rand`：OWN 按 PX6 取 NO_NEW_CONTENT_TO_PERMUTE。
+  - 也不影响 MC 增补需求（E01）。
