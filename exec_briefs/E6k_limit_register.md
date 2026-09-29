@@ -1,0 +1,18 @@
+# E6k limit_register（L01 起；执行端）
+
+- **L01** 同一历史反复研究：后段是新算子首次评价（NEW_OPERATOR_FIRST_EVALUATION_ON_REUSED_HISTORY），不是样本外
+- **L02** RP 最优性只在固定规范配对集内（plan §5.4 更正）；未配对结构性编辑不执行
+- **L03** LX 为本项目的配额 / 优先序移植（E6j matched_n 同 N 合同键），不是 DGTW AS 公式；A4b 的 T 重估不是固定共同门
+- **L04** HG 主历史四段段首空状态（对齐旧引擎 reset）；跨段连续状态只在 48 个 HG 主展示对象作诊断
+- **L05** z_LAG1 段首日无 T−1（未知 size 处理）；size 紧区间对共同未知只算一次
+- **L06** Stage 0 第 3 类新算子恒等锚只在推导两段（后段在授权后同代码补算）
+- **L07** A6-3 / A3-12 在 profile 产物上抽样 455 / 154（附录 500 / 200）；推导段真实账户落盘后足额复核（checks/closure_deriv.csv）
+- **L08** 随机均值是条件于历史的机会基线，不是精确 p 值；MC 误差另报（plan §10.2 / W15）
+- **L09** descriptors_E6k.csv 的 evidence_exposure 列为编译器粗分类；逐账户暴露以 selection_exposure_ledger_E6k.csv 为准
+- **L10** 对照分布的随机路径只取前 256 条（诊断）
+- **L11** 冲击括号（A 5 亿 κ .5 / A 10 亿 κ 1）为未校准情景，不是实际成交成本
+- **L12** SMB 暴露回归与尾部账本只作描述；截距占比不等于"不是 size"（plan §10.3）
+- **L13** RP 主路径（DFS 节点上限 → 逐级 MILP）在部分日复核失败（HiGHS presolve 下见证解越出预算，2026-09-29 后段首跑发现）：按 X08 / plan §5.4 第 6 条由两条独立精确路径恢复（关闭 presolve、逐级见证复核的 MILP；带符号可达界剪枝的精确深搜；两者一致才采用），恢复日计数 {"2019-2023": 6, "2024-2026": 11}；未恢复日隔离回父并标 SOLVER_LIMIT，计数 {}（含此类日的 RP 账户是混合路径，不称完整 RP 经济结果）；推导两段无失败日（主路径结果与恢复代码无关）
+- **L14** 执行端补充 X04：Stage 0 第 3 类新算子恒等锚与 A1-auto 掩码事实在两后段于授权后同代码补算（R0 第 3 / 5 节按段分列）；后段第 3 类结果不回写 Stage 0 manifest（source_manifest 保持开工时状态）
+- **L15** 两个诊断的首版退化、由 v2 替代（v1 文件保留不删、不作读数）：衰减场景前瞻版误用同一 draw（`diagnostics/decay/decay_scenarios.csv` → `decay_scenarios_v2.csv`）；HG 跨段连续状态（X09）的上段末状态在段首预热日（门域 K = 0）被清空（`hg_continuous_<段>_<段>.csv` → `hg_continuous_v2_*.csv`，hold_init 只用于该诊断，登记账户不变）
+- **L16** 覆盖不足（登记 query 有、本轮未记账）：PM 固定配对交换数的嵌套与结构单边编辑（E6K-Q10-c）；TREFIT 第二关逐日有效样本数（E6K-Q07-b）；POST2 第二关前编辑数只以最终名单相对原父的换入近似（E6K-Q08-b）

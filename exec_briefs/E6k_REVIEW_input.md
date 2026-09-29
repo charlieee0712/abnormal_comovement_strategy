@@ -1,0 +1,353 @@
+# E6k REVIEW_input（执行端交付清单；全部路径相对结果目录 `results/20260928_2325_E6k_k_binding_stage/`）
+
+用途：决策端 V / D / REVIEW 的输入清单。REPORT 交付即冻结；补充另起 supplement。
+
+读法注（part1 §6 十八卡机械计数表）：Q16 / Q18 的"1 个对象、0 行推导段数"是卡级占位对象（`E6J_638_OBJECTS` 在 part2 衰减场景与 E6j 原表复现里读；`ALL_DESCRIPTORS` 在 `registry/hypothesis_lineage_E6k.csv` 与闭包门清单里读），不是缺算；Q14 的对象数与推导段行数之差是 PARENT 源锚行（相对自身的差不定义）。
+
+## REPORT
+- `reports/E6k_REPORT_R0.md`（a907eb6665665c77）
+- `reports/E6k_REPORT_part1.md`（8bb7381d76712795）
+- `reports/E6k_REPORT_part2.md`（11d7caa217aa3abc）
+- `reports/E6k_REPORT_part3.md`（e660c47015f01ee8）
+- `reports/E6k_REPORT_mechanisms.md`（898e8f73a23cf6b3）
+- `reports/E6k_REPORT_carried.md`（c421ef2c8c7f2939）
+- `reports/E6k_REPORT_cards.md`（22c35c88d694497c）
+- `reports/E6k_REVIEW_input.md`（本文件）
+- `reports/E6k_lessons_delta.md`（e88aaf1838b3226f）
+- `reports/E6k_limit_register.md`（cc304b126ab82128）
+- `reports/E6k_record_B_draft.md`（a4a197f432ebf798）
+- `reports/E6k_routing_review_A1_auto.md`（757f5948557237a7）
+
+## 机器表
+- `source_manifest.json`（bdf4db8ab8c8ce32）
+- `results/account_manifest.csv`（5be9104d8d04408e）
+- `results/full/policy_E6k.csv`（3ab02a5966fc86f1）
+- `registry/hypothesis_lineage_E6k.csv`（5d7c15d892ec13a1）
+- `results/hypothesis_outcomes.json`（933313366b5776f2）
+- `results/mask_edit_ledger.csv`（b527c3ffa4a4791a）
+- `results/risk_exposure_daily.parquet`（f28a3e114279a8dc）
+- `results/layer_transplants.csv`（2b5981ec8ae3fcae）
+- `results/random_registry.csv`（fcbad75903b0138d）
+- `results/read_permissions.csv`（9d22a44334f2527f）
+- `results/coverage.csv`（7d09521faf2e76b8）
+- `results/completion_receipt.json`（本清单之后写入：闭包门 / 三处镜像）
+
+## 登记 / 授权 / 封存
+- `registration/B_package_manifest_E6k.json`（436b71e780b90355）
+- `registration/P_package_manifest_E6k.json`（77f24f0ead89678c）
+- `registration/a0_manifest_E6k.json`（1b5a390498aff0a2）
+- `registration/a1_auto_E6k.json`（897afd49866a3219）
+- `registration/a1_auto_draft_E6k.json`（c0d8cbb7d8dd3ae1）
+- `registration/a1_auto_masks_E6k.json`（42c31894417c112a）
+- `registration/a1_auto_masks_post_E6k.json`（6124be9862e13785）
+- `registration/executor_supplements_E6k.json`（bf937d8490b4dfdf）
+- `registration/executor_supplements_E6k_amend_1.json`（a252027038cdec64）
+- `registration/policy_profiles_E6k.json`（82c1c8a0623c823b）
+- `registration/policy_profiles_E6k_amend_1.json`（1be280274a566882）
+- `registration/policy_profiles_E6k_amend_2.json`（4638cca64134dc24）
+- `registration/preregistration_B_E6k.md`（7fabcf97b6643e07）
+- `registration/preregistration_P_E6k.md`（b478a7f4794e5cc0）
+- `registration/preregistration_amend_20260929.md`（6a7820853e6ccdfe）
+- `registration/record_B_approved_E6k.json`（d0a96601a09c4673）
+- `registration/record_B_conditions_receipt_E6k.json`（fc84b6a9b6358243）
+- `registration/record_B_draft_objects_E6k.csv`（f36748c1b0b4d19d）
+- `registration/record_B_mode_A.json`（2a04112058198934）
+- `registration/seal_deriv.json`（e065ffe0d4bcb62f）
+- `registration/seal_post.json`（e366a2b58cb682d7）
+
+## registry
+- `registry/P_objects_E6k.csv`（288e01280a645f2e）
+- `registry/accessory_E6k.csv`（9b1baea267a804e8）
+- `registry/bootstrap_comparisons_E6k.csv`（45a9aabcbf8edab4）
+- `registry/cards_E6k.csv`（e5212d0df6b15aea）
+- `registry/descriptors_E6k.csv`（439176bea971d977）
+- `registry/hypothesis_lineage_E6k.csv`（5d7c15d892ec13a1）
+- `registry/mask_facts_deriv_E6k.csv`（5b66f39f0c0cc5a7）
+- `registry/mask_facts_post_E6k.csv`（6ed32cec4156d38a）
+- `registry/query_registry_E6k.csv`（8b1c18aaff00e154）
+- `registry/question_to_objects_E6k.csv`（6904151179cba2be）
+- `registry/randoms_E6k.csv`（e6400724ee11726d）
+- `registry/selection_exposure_ledger_E6k.csv`（642efb3cd302d7a9）
+- `registry/task_to_objects_E6k.csv`（7c67bb81cd1ffac1）
+
+## Stage 0
+- `stage0/c1_identity/guard_attack.csv`（277b87a9861002ef）
+- `stage0/c1_identity/identity_checks.csv`（b943d309f42f3a6c）
+- `stage0/c1_identity_rerun/guard_attack.csv`（277b87a9861002ef）
+- `stage0/c1_identity_rerun/identity_checks.csv`（a1062665c5bcc5a7）
+- `stage0/c2_source/source_engine_2010-2014.csv`（b4a5231361cc35a0）
+- `stage0/c2_source/source_engine_2015-2018.csv`（e271a661c0a7fc6d）
+- `stage0/c2_source/source_engine_2019-2023.csv`（75ed12cba40e8f5e）
+- `stage0/c2_source/source_engine_2024-2026.csv`（24a8c3f7590f0472）
+- `stage0/c2_source/source_prod_checks.csv`（b5c1ff30c38ea5cd）
+- `stage0/c2_source/source_prod_profile.csv`（a02195a43f0015c3）
+- `stage0/c3_ops/ops_identity_2010-2014.csv`（d7cb4925fcfbab16）
+- `stage0/c3_ops/ops_identity_2015-2018.csv`（eb24449003a0898d）
+- `stage0/c3_ops/ops_identity_2019-2023.csv`（18afac0850fd6808）
+- `stage0/c3_ops/ops_identity_2024-2026.csv`（3ed3d87c84846e91）
+- `stage0/c3_ops/ops_timing_2010-2014.csv`（a79c3c6e103c7e42）
+- `stage0/c3_ops/ops_timing_2015-2018.csv`（4e1794f2e1a574d7）
+- `stage0/c3_ops/ops_timing_2019-2023.csv`（05521ad4bd79b796）
+- `stage0/c3_ops/ops_timing_2024-2026.csv`（0d2ef7bbf2cb15a7）
+- `stage0/c4_data/data_checks_2010-2014.csv`（d8ab0e2b59970a02）
+- `stage0/c4_data/data_checks_2015-2018.csv`（30c0ce59b3d80d15）
+- `stage0/c4_data/data_checks_2019-2023.csv`（3d354ab51d285a96）
+- `stage0/c4_data/data_checks_2024-2026.csv`（e24af7b806093b2b）
+- `stage0/c5_random/eight_subset_leaf_diagnostics.csv`（27698d75a08b1270）
+- `stage0/c5_random/random_checks.csv`（bbc9a9d1fb661808）
+- `stage0/c6_output/output_checks.csv`（c4ebdc9d6c357ca6）
+- `stage0/c6_output/profile.csv`（05447acf5238a1e3）
+
+## 结果与诊断
+- `diagnostics/control_distributions/2010-2014.csv`（f184fc6b181dadf6）
+- `diagnostics/control_distributions/2015-2018.csv`（ba5f85662b6af6f4）
+- `diagnostics/control_distributions/2019-2023.csv`（46a2be4f051ad3c1）
+- `diagnostics/control_distributions/2024-2026.csv`（ce2d5ba37fe31931）
+- `diagnostics/decay/decay_scenarios.csv`（c3d30e241088f5fa）
+- `diagnostics/decay/decay_scenarios_v2.csv`（9897b63a3f806036）
+- `diagnostics/hg_continuous/hg_continuous_2010-2014_2015-2018.csv`（9110c99ad3379d47）
+- `diagnostics/hg_continuous/hg_continuous_2019-2023_2024-2026.csv`（6e6f8407ff556d41）
+- `diagnostics/hg_continuous/hg_continuous_v2_2010-2014_2015-2018_2019-2023_2024-2026.csv`（c68653724bb29741）
+- `diagnostics/mechanisms/2010-2014_capital.csv`（1ea60a0374fa51e6）
+- `diagnostics/mechanisms/2010-2014_leafdiag.csv`（63b4d5fd8d5cc937）
+- `diagnostics/mechanisms/2010-2014_lx_gross.csv`（ca110f3fe5a8b904）
+- `diagnostics/mechanisms/2010-2014_shapley.csv`（a9175caf4fd80a3e）
+- `diagnostics/mechanisms/2015-2018_capital.csv`（02cc0b2b8ab09bdd）
+- `diagnostics/mechanisms/2015-2018_leafdiag.csv`（e06ad20d4656a8ce）
+- `diagnostics/mechanisms/2015-2018_lx_gross.csv`（848c4ea59ca67f6d）
+- `diagnostics/mechanisms/2015-2018_shapley.csv`（3b8d578ada5a38ae）
+- `diagnostics/mechanisms/2019-2023_capital.csv`（54142d4431fc6c38）
+- `diagnostics/mechanisms/2019-2023_leafdiag.csv`（8b4b094f21607820）
+- `diagnostics/mechanisms/2019-2023_lx_gross.csv`（b25ad0ff3819fab3）
+- `diagnostics/mechanisms/2019-2023_shapley.csv`（bf6fb1b1a6cc3c90）
+- `diagnostics/mechanisms/2024-2026_capital.csv`（bd301d149d9768cd）
+- `diagnostics/mechanisms/2024-2026_leafdiag.csv`（9958d1101ce03a64）
+- `diagnostics/mechanisms/2024-2026_lx_gross.csv`（cbcddb201de336ce）
+- `diagnostics/mechanisms/2024-2026_shapley.csv`（14443a1f08e26549）
+- `diagnostics/risk/2010-2014_smb.csv`（839b9dd5d514480e）
+- `diagnostics/risk/2010-2014_tails.csv`（98fb76004a588c47）
+- `diagnostics/risk/2015-2018_smb.csv`（b5448e73060b6056）
+- `diagnostics/risk/2015-2018_tails.csv`（a5c9033b7fe810f6）
+- `diagnostics/risk/2019-2023_smb.csv`（6a5e945948245b49）
+- `diagnostics/risk/2019-2023_tails.csv`（1141aa0c02a61cbf）
+- `diagnostics/risk/2024-2026_smb.csv`（0047fce664f9d6ad）
+- `diagnostics/risk/2024-2026_tails.csv`（1696f0d24a78a7f3）
+- `diagnostics/shadow/2010-2014.csv`（d34e1c5d00cc7e1f）
+- `diagnostics/shadow/2015-2018.csv`（aa663f5dab88f67f）
+- `diagnostics/shadow/2019-2023.csv`（d21effb042621e7f）
+- `diagnostics/shadow/2024-2026.csv`（acaf8f0d910be800）
+- `results/account_manifest.csv`（5be9104d8d04408e）
+- `results/coverage.csv`（7d09521faf2e76b8）
+- `results/deriv/descriptor_stats_2010-2014.csv`（12788fbc14db4f21）
+- `results/deriv/descriptor_stats_2015-2018.csv`（a8cdb9fd548fb84d）
+- `results/deriv/descriptor_stats_deriv_merged.csv`（f1a2a4d518b271c1）
+- `results/deriv/mc_plan_2010-2014_023546.csv`（b085f3fc6a7a5093）
+- `results/deriv/mc_plan_2015-2018_023548.csv`（39828f8de591eff5）
+- `results/deriv/random_refs_2010-2014.csv`（813a04640d8469df）
+- `results/deriv/random_refs_2015-2018.csv`（06050ffca1b6c209）
+- `results/deriv/random_refs_deriv_merged.csv`（c8ed755898abcc08）
+- `results/full/bootstrap/bootstrap_comparisons.csv`（405f8271197b5129）
+- `results/full/bootstrap/simultaneous_band_q95.csv`（97aac995b235d8c5）
+- `results/full/descriptor_stats_2010-2014.csv`（12788fbc14db4f21）
+- `results/full/descriptor_stats_2015-2018.csv`（a8cdb9fd548fb84d）
+- `results/full/descriptor_stats_2019-2023.csv`（901e43c997d09ee1）
+- `results/full/descriptor_stats_2024-2026.csv`（d1733f3ee31996d6）
+- `results/full/policy_E6k.csv`（3ab02a5966fc86f1）
+- `results/full/policy_additions_E6k.csv`（aa3e337aecf03c33）
+- `results/full/production_change_candidates_E6k.csv`（babcc6a608ea9f5a）
+- `results/full/random_refs_2010-2014.csv`（813a04640d8469df）
+- `results/full/random_refs_2015-2018.csv`（06050ffca1b6c209）
+- `results/full/random_refs_2019-2023.csv`（f7ec93cf43c3d26b）
+- `results/full/random_refs_2024-2026.csv`（e6dc3391077105a7）
+- `results/layer_transplants.csv`（2b5981ec8ae3fcae）
+- `results/mask_edit_ledger.csv`（b527c3ffa4a4791a）
+- `results/post/mc_plan_2019-2023_105229.csv`（86ce41a0ed4729b9）
+- `results/post/mc_plan_2024-2026_105230.csv`（facea62576b47bb3）
+- `results/random_registry.csv`（fcbad75903b0138d）
+- `results/read_permissions.csv`（9d22a44334f2527f）
+
+## 代码（47 code/project_core）
+- `code/e6k_a0.py`（2c007e932cbe7239）
+- `code/e6k_a1_auto.py`（2e1904230c2ccd13）
+- `code/e6k_acct.py`（41827f43242af7c5）
+- `code/e6k_boot.py`（a8aa0874ae5e8e5f）
+- `code/e6k_bootstrap.py`（adb317e771cf2c99）
+- `code/e6k_chain_analysis.sh`（bb9809c824b08e9d）
+- `code/e6k_chain_mc.sh`（01400b5336655124）
+- `code/e6k_chain_post.sh`（48e3170fcf19a6c1）
+- `code/e6k_chain_post2.sh`（256db0fa8e0291f4）
+- `code/e6k_closure_deriv.py`（e97ffe3b00b688d3）
+- `code/e6k_control_dist.py`（4d61456bc96f742e）
+- `code/e6k_core.py`（fd3a037983769b26）
+- `code/e6k_decay.py`（70b6cd25fe601e57）
+- `code/e6k_deliver.py`（3b49124c4b6f0784）
+- `code/e6k_env.py`（ea09ba399bb6300b）
+- `code/e6k_hg_continuous.py`（c5c76a2b95a409d7）
+- `code/e6k_leafdiag.py`（019c1914693a3900）
+- `code/e6k_mechanisms.py`（cb426ab2e42f336f）
+- `code/e6k_ops.py`（4835c41e294149b0）
+- `code/e6k_policy.py`（8a16f91ac9977e60）
+- `code/e6k_prereg.py`（17a0f58a6a5a6906）
+- `code/e6k_queue.py`（cc10ea175621a3bb）
+- `code/e6k_queue_failed.py`（3926859cb0b01bed）
+- `code/e6k_queue_topup.py`（b0cbf8c70902c788）
+- `code/e6k_random.py`（76754ec4618aa1d3）
+- `code/e6k_record_b.py`（58da689ce3a6a6c0）
+- `code/e6k_report.py`（a413b220878a396d）
+- `code/e6k_report_cards.py`（ec66d18bea8dcc9b）
+- `code/e6k_report_carried.py`（00320540d7b3528e）
+- `code/e6k_report_mechanisms.py`（92499726b1cbca73）
+- `code/e6k_report_part1.py`（4393883cc39a327d）
+- `code/e6k_report_part2.py`（15cb399e10c6d477）
+- `code/e6k_report_part3.py`（73422004d6a36258）
+- `code/e6k_report_r0.py`（8982e3873fece2fb）
+- `code/e6k_risk.py`（04ca115ae67a4795）
+- `code/e6k_run_det.py`（4221626b54680ef8）
+- `code/e6k_run_rand.py`（43ab2ca42391fe60）
+- `code/e6k_seal.py`（3368abd24692365a）
+- `code/e6k_shadow.py`（511ef5291c47c577）
+- `code/e6k_stage0_close.py`（809b395b08110e66）
+- `code/e6k_stage0_data.py`（c92dbc134df6a30e）
+- `code/e6k_stage0_identity.py`（5c7b7356c2e47a47）
+- `code/e6k_stage0_ops.py`（59fee076a57baee8）
+- `code/e6k_stage0_output.py`（5f513a375ed3f274）
+- `code/e6k_stage0_random.py`（fe82e1acae0223c3）
+- `code/e6k_stage0_source.py`（83d0898639da1beb）
+- `code/e6k_stats.py`（2d8257343f00baa4）
+- `code/e6k_worker.sh`（d448cef4778cf9bb）
+
+## 输入副本
+- `00_协议_copy.md`（f685e538dd6c5a27）
+- `E6j_REPORT_supplement_1_copy.md`（727f4892944e7116）
+- `E6j_REVIEW_copy.md`（b036617dbe4e96b0）
+- `E6j_RULING_copy.md`（cb3b8a5f4df910f7）
+- `E6j_VERIFY_report_copy.md`（3e6345e16246e64c）
+- `E6j_delivery_addendum_1_copy.md`（5c662cd56478fdf4）
+- `E6k_proposal_copy.md`（65d2b01007ce6130）
+- `PLAN_COPY.md`（1f9e949c238b9125）
+- `REVIEW_protocol_copy.md`（0b15019e0867a7a0）
+- `brief_appendix_copy.md`（2258b2c66e794614）
+- `brief_copy.md`（8be4df3da41f28f8）
+- `engine_contract.md`（6f8cd4c61e76bc50）
+- `source_resolution.md`（80ba7665d162d64c）
+
+## query_id 登记（119 个；跨文件唯一）
+- E6K-CAR-PARENTS → E6k_REPORT_carried.md
+- E6K-CAR-RECEIPTS → E6k_REPORT_carried.md
+- E6K-MX-ACC → E6k_REPORT_mechanisms.md
+- E6K-MX-CAP → E6k_REPORT_mechanisms.md
+- E6K-MX-CS → E6k_REPORT_mechanisms.md
+- E6K-MX-HG4 → E6k_REPORT_mechanisms.md
+- E6K-MX-HGCONT → E6k_REPORT_mechanisms.md
+- E6K-MX-LX4 → E6k_REPORT_mechanisms.md
+- E6K-MX-LXGROSS → E6k_REPORT_mechanisms.md
+- E6K-MX-POST2 → E6k_REPORT_mechanisms.md
+- E6K-MX-RP → E6k_REPORT_mechanisms.md
+- E6K-MX-SHADOW → E6k_REPORT_mechanisms.md
+- E6K-MX-SHAPLEY → E6k_REPORT_mechanisms.md
+- E6K-MX-SMB → E6k_REPORT_mechanisms.md
+- E6K-MX-TAILS → E6k_REPORT_mechanisms.md
+- E6K-MX-TREFIT → E6k_REPORT_mechanisms.md
+- E6K-P1-144-C1 → E6k_REPORT_part1.md
+- E6K-P1-144-M → E6k_REPORT_part1.md
+- E6K-P1-144-Q → E6k_REPORT_part1.md
+- E6K-P1-144-S → E6k_REPORT_part1.md
+- E6K-P1-ACC → E6k_REPORT_part1.md
+- E6K-P1-BAND → E6k_REPORT_part1.md
+- E6K-P1-C1HI-SM → E6k_REPORT_part1.md
+- E6K-P1-CARDS → E6k_REPORT_part1.md
+- E6K-P1-CS → E6k_REPORT_part1.md
+- E6K-P1-GRID → E6k_REPORT_part1.md
+- E6K-P1-HG4 → E6k_REPORT_part1.md
+- E6K-P1-LX → E6k_REPORT_part1.md
+- E6K-P1-POST2 → E6k_REPORT_part1.md
+- E6K-P1-RAND → E6k_REPORT_part1.md
+- E6K-P1-RAR → E6k_REPORT_part1.md
+- E6K-P1-RPFACTS → E6k_REPORT_part1.md
+- E6K-P1-TREFIT → E6k_REPORT_part1.md
+- E6K-P2-144-C1 → E6k_REPORT_part2.md
+- E6K-P2-144-M → E6k_REPORT_part2.md
+- E6K-P2-144-Q → E6k_REPORT_part2.md
+- E6K-P2-144-S → E6k_REPORT_part2.md
+- E6K-P2-C1HI-SM → E6k_REPORT_part2.md
+- E6K-P2-DECAY → E6k_REPORT_part2.md
+- E6K-P2-GRID → E6k_REPORT_part2.md
+- E6K-P3-ADD → E6k_REPORT_part3.md
+- E6K-P3-CAND → E6k_REPORT_part3.md
+- E6K-P3-CAND-COUNT → E6k_REPORT_part3.md
+- E6K-P3-EDGE → E6k_REPORT_part3.md
+- E6K-P3-EDGE-COUNT → E6k_REPORT_part3.md
+- E6K-P3-POL-EXECDISCLOSEONLY → E6k_REPORT_part3.md
+- E6K-P3-POL-EXECLEADERVSPARENT → E6k_REPORT_part3.md
+- E6K-P3-POL-LEGACYEDIT5 → E6k_REPORT_part3.md
+- E6K-P3-POL-PROPOSEDPORT3LAG1 → E6k_REPORT_part3.md
+- E6K-P3-POL-PROPOSEDPORT3T → E6k_REPORT_part3.md
+- E6K-Q01-a → E6k_REPORT_cards.md
+- E6K-Q01-b → E6k_REPORT_cards.md
+- E6K-Q01-c → E6k_REPORT_cards.md
+- E6K-Q02-a → E6k_REPORT_cards.md
+- E6K-Q02-b → E6k_REPORT_cards.md
+- E6K-Q02-c → E6k_REPORT_cards.md
+- E6K-Q03-a → E6k_REPORT_cards.md
+- E6K-Q03-b → E6k_REPORT_cards.md
+- E6K-Q03-c → E6k_REPORT_cards.md
+- E6K-Q04-a → E6k_REPORT_cards.md
+- E6K-Q04-b → E6k_REPORT_cards.md
+- E6K-Q04-c → E6k_REPORT_cards.md
+- E6K-Q05-a → E6k_REPORT_cards.md
+- E6K-Q05-b → E6k_REPORT_cards.md
+- E6K-Q05-c → E6k_REPORT_cards.md
+- E6K-Q06-a → E6k_REPORT_cards.md
+- E6K-Q06-b → E6k_REPORT_cards.md
+- E6K-Q06-c → E6k_REPORT_cards.md
+- E6K-Q07-a → E6k_REPORT_cards.md
+- E6K-Q07-b → E6k_REPORT_cards.md
+- E6K-Q08-a → E6k_REPORT_cards.md
+- E6K-Q08-b → E6k_REPORT_cards.md
+- E6K-Q09-a → E6k_REPORT_cards.md
+- E6K-Q09-b → E6k_REPORT_cards.md
+- E6K-Q10-a → E6k_REPORT_cards.md
+- E6K-Q10-b → E6k_REPORT_cards.md
+- E6K-Q10-c → E6k_REPORT_cards.md
+- E6K-Q11-a → E6k_REPORT_cards.md
+- E6K-Q11-b → E6k_REPORT_cards.md
+- E6K-Q11-c → E6k_REPORT_cards.md
+- E6K-Q12-a → E6k_REPORT_cards.md
+- E6K-Q12-b → E6k_REPORT_cards.md
+- E6K-Q13-a → E6k_REPORT_cards.md
+- E6K-Q13-b → E6k_REPORT_cards.md
+- E6K-Q13-c → E6k_REPORT_cards.md
+- E6K-Q14-a → E6k_REPORT_cards.md
+- E6K-Q14-b → E6k_REPORT_cards.md
+- E6K-Q14-c → E6k_REPORT_cards.md
+- E6K-Q15-a → E6k_REPORT_cards.md
+- E6K-Q15-b → E6k_REPORT_cards.md
+- E6K-Q16-a → E6k_REPORT_cards.md
+- E6K-Q16-b → E6k_REPORT_cards.md
+- E6K-Q17-a → E6k_REPORT_cards.md
+- E6K-Q17-b → E6k_REPORT_cards.md
+- E6K-Q17-c → E6k_REPORT_cards.md
+- E6K-Q18-a → E6k_REPORT_cards.md
+- E6K-Q18-b → E6k_REPORT_cards.md
+- E6K-R0-A0 → E6k_REPORT_R0.md
+- E6K-R0-A1PRE → E6k_REPORT_R0.md
+- E6K-R0-AUTH → E6k_REPORT_R0.md
+- E6K-R0-CTRL → E6k_REPORT_R0.md
+- E6K-R0-DOCS → E6k_REPORT_R0.md
+- E6K-R0-ENV → E6k_REPORT_R0.md
+- E6K-R0-FBDOM → E6k_REPORT_R0.md
+- E6K-R0-FBDOM-POST → E6k_REPORT_R0.md
+- E6K-R0-FLAGS → E6k_REPORT_R0.md
+- E6K-R0-FLAGS-POST → E6k_REPORT_R0.md
+- E6K-R0-GEN → E6k_REPORT_R0.md
+- E6K-R0-LIMITS → E6k_REPORT_R0.md
+- E6K-R0-MASK → E6k_REPORT_R0.md
+- E6K-R0-MASK-POST → E6k_REPORT_R0.md
+- E6K-R0-RPSOLVER → E6k_REPORT_R0.md
+- E6K-R0-S0-C1IDENTITY → E6k_REPORT_R0.md
+- E6K-R0-S0-C2SOURCE → E6k_REPORT_R0.md
+- E6K-R0-S0-C3OPS → E6k_REPORT_R0.md
+- E6K-R0-S0-C4DATA → E6k_REPORT_R0.md
+- E6K-R0-S0-C5RANDOM → E6k_REPORT_R0.md
+- E6K-R0-S0-C6OUTPUT → E6k_REPORT_R0.md
+- E6K-R0-STAGE0 → E6k_REPORT_R0.md
