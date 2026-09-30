@@ -1,0 +1,677 @@
+# E6l REVIEW_input（执行端交付清单；全部路径相对结果目录 `results/20260930_1141_E6l_time_memory_stage/`）
+
+用途：决策端 V / D / REVIEW 的输入清单。REPORT 交付即冻结；补充另起 supplement。读法要点见 `reports/E6l_REVIEW_input_notes.md`（执行端读完结果后写）。
+
+## REPORT 与交付文档
+- `reports/E6l_REPORT_R0.md`（076a90c4eb905977）
+- `reports/E6l_REPORT_part1.md`（cd0f1f10038766fb）
+- `reports/E6l_REPORT_part2.md`（5779c981a7d722f2）
+- `reports/E6l_REPORT_part3.md`（ef9d5619b1b0d47e）
+- `reports/E6l_REPORT_mechanisms.md`（adfd1ab8c772a4f6）
+- `reports/E6l_REPORT_carried.md`（c9b64d7a74cfb96c）
+- `reports/E6l_REPORT_cards.md`（f86850dec1e7c3fb）
+- `reports/E6l_REVIEW_input.md`（本文件）
+- `reports/E6l_lessons_delta.md`（e817d0f295d69ee9）
+- `reports/E6l_limit_register.md`（690311f28c3fb285）
+- `reports/E6l_code_change_register.md`（15419dfa1fb79a78）
+- `reports/E6l_record_B_draft.md`（34c35dfd88937cb9）
+- `reports/E6l_REVIEW_input_notes.md`（ad785abe1d3d618f）
+
+## 机器表与固定表
+- `source_manifest.json`（7fbec7de34d504a8）
+- `engine_contract.md`（a08038ed27f6ed19）
+- `source_resolution.md`（be7b5770a5a38580）
+- `results/account_manifest.csv`（b6cb5cfa139d9f0c）
+- `results/full/policy_E6l.csv`（20bb0f85da6bd0ec）
+- `results/full/policy_additions_E6l.csv`（67fd5522019278ed）
+- `registry/hypothesis_lineage_E6l.csv`（993bdde800abfb6f）
+- `results/hypothesis_outcomes.json`（6d75fb5465afefe6）
+- `results/mask_edit_ledger.csv`（a8329a69b25c21e8）
+- `results/risk_exposure_daily.parquet`（174b4e36e36aaa32）
+- `results/random_registry.csv`（a506e668a8697072）
+- `results/read_permissions.csv`（5843c13ea6b0ebb7）
+- `results/coverage.csv`（319830bf01aa2ec6）
+- `results/completion_receipt.json`（本清单之后写入：闭包门 / 三处镜像）
+- `results/full/source_lineage.csv`（58587fc05845bba2）
+- `results/full/kernel_contracts.csv`（185151590f259c2a）
+- `results/full/memory_contracts.csv`（4f4b60cd66808a1e）
+- `results/full/hypothesis_lineage.csv`（07d654fd2877ccba）
+- `results/full/candidate72.csv`（5c65a2c83bdfa50d）
+- `results/full/dose72.csv`（2495204432db6d1a）
+- `results/full/comparison_manifest.csv`（00a284d6ef571280）
+- `results/full/policy_profiles.csv`（5745a0dd8b6eeb6d）
+- `results/full/memory_age_daily.csv`（dd9ee144e8819dc5）
+- `results/full/state_clock_ledger.csv`（3ecc795d1131b1df）
+- `results/full/turn_cost_frontier.csv`（e7cf4167b774a8ce）
+- `results/full/risk_tight_bounds.csv`（0ceda469e6876e04）
+- `results/full/random_refs.csv`（21d1038c91f3ff96）
+- `results/full/mc_precision.csv`（0a8bfebdcf765627）
+- `results/full/completion_coverage.csv`（319830bf01aa2ec6）
+- `results/full/paired_mde80_deriv.csv`（f45ff194a13d4d6e）
+- `results/full/state_unknown_days.csv`（500bbd699b39f1b2）
+- `results/full/inventory_saturation.csv`（ad5cf99c55d9d875）
+- `results/full/membership_age_ledger.csv`（7748f9378307b4fd）
+- `results/full/frontier_dose_tilt.csv`（58e304adf80d5330）
+
+## 登记 / 授权 / 封存
+- `registration/B_package_manifest_E6l.json`（02a2d2ca9058e929）
+- `registration/P_package_manifest_E6l.json`（8805206989df4a3c）
+- `registration/a0_manifest_E6l.json`（f31464da37229bfc）
+- `registration/a1_auto_E6l.json`（6e6458cb6e4e3208）
+- `registration/a1_auto_E6l_rerun.json`（382041ff0223fcc7）
+- `registration/a1_auto_E6l_rerun2.json`（a4d26aad22c9bdbb）
+- `registration/a1_auto_E6l_rerun3.json`（d7100c2e380216e4）
+- `registration/a1_auto_draft_E6l.json`（a564abac34949b43）
+- `registration/authorization_intake_E6l.json`（cca52495d3cad75c）
+- `registration/policy_profiles_E6l.json`（590d200fee3f0d9e）
+- `registration/preregistration_B_E6l.md`（3d1a6be1dec52f6a）
+- `registration/preregistration_P_E6l.md`（a5cc93fb81a63e06）
+- `registration/record_B_conditions_receipt_E6l.json`（585e619a0077b95b）
+- `registration/record_B_draft_objects_E6l.csv`（60348c11acdce402）
+- `registration/record_B_entry_post_E6l.json`（a1a61caaa1486a27）
+- `registration/record_B_preauthorized_E6l.json`（35a7027e5895577f）
+- `registration/seal_deriv.json`（60b7e4d1274df18c）
+- `registration/seal_post.json`（aadceca4a2c73978）
+
+## registry
+- `registry/P_objects_E6l.csv`（bd983ae80c7c0dc5）
+- `registry/accessory_E6l.csv`（c5334e6f23673090）
+- `registry/bootstrap_comparisons_E6l.csv`（9a59b658557a2ce2）
+- `registry/cards_E6l.csv`（b24f34dc3600cca5）
+- `registry/cards_stageB_E6l.csv`（b470436d085cc3cf）
+- `registry/comparison_manifest_E6l.csv`（00a284d6ef571280）
+- `registry/descriptors_E6l.csv`（1fdaa7ca569804b3）
+- `registry/fixed_outputs_E6l.csv`（0809f25a1e6cfb96）
+- `registry/hypothesis_lineage_E6l.csv`（993bdde800abfb6f）
+- `registry/query_registry_E6l.csv`（501760abef589736）
+- `registry/question_to_objects_E6l.csv`（a6c8368fe2701c63）
+- `registry/randoms_E6l.csv`（8a795d719f16fc7c）
+- `registry/selection_exposure_ledger_E6l.csv`（2a10ba4f8f79daa2）
+- `registry/task_to_objects_E6l.csv`（5fa31f32fc4b1136）
+
+## Stage 0
+- `stage0/c1_identity/guard_attack.csv`（f385e42413abed41）
+- `stage0/c1_identity/guard_attack/fake_cache/2024-2026/FAKE_J.json`（c40e8b269f0e98bf）
+- `stage0/c1_identity/guard_attack/fake_cache/2024-2026/FAKE__OBS.json`（c40e8b269f0e98bf）
+- `stage0/c1_identity/identity_checks.csv`（1a2e9e2f45e469df）
+- `stage0/c1_identity/post_gate_two_way.csv`（5884e5d7f7626d2b）
+- `stage0/c1_identity/readonly_code_baseline.json`（bace56075eb4d9eb）
+- `stage0/c1_identity_rerun/guard_attack.csv`（f385e42413abed41）
+- `stage0/c1_identity_rerun/guard_attack/fake_cache/2024-2026/FAKE_J.json`（c40e8b269f0e98bf）
+- `stage0/c1_identity_rerun/guard_attack/fake_cache/2024-2026/FAKE__OBS.json`（c40e8b269f0e98bf）
+- `stage0/c1_identity_rerun/identity_checks.csv`（da6c77d7a002c746）
+- `stage0/c1_identity_rerun/post_gate_two_way.csv`（5884e5d7f7626d2b）
+- `stage0/c1_identity_rerun/readonly_code_baseline.json`（570563816a3017da）
+- `stage0/c2_source/source_engine_2010-2014.csv`（93a112424acfacf8）
+- `stage0/c2_source/source_engine_2015-2018.csv`（e94fed34cb15a2b4）
+- `stage0/c2_source/source_engine_2019-2023.csv`（ba89abc707e9f741）
+- `stage0/c2_source/source_engine_2024-2026.csv`（3f30cfc1d55e7053）
+- `stage0/c2_source/source_prod_checks.csv`（b5c1ff30c38ea5cd）
+- `stage0/c2_source/source_prod_profile.csv`（b130dd3587fbea5e）
+- `stage0/c3_ops/ops_identity_2010-2014.csv`（c3a9018552713353）
+- `stage0/c3_ops/ops_identity_2015-2018.csv`（55a708079dcc20e9）
+- `stage0/c3_ops/ops_timing_2010-2014.csv`（828a59ce18e310a8）
+- `stage0/c3_ops/ops_timing_2015-2018.csv`（466474c06a1fa807）
+- `stage0/c4_data/data_checks_2010-2014.csv`（b064a3dfcdb8b796）
+- `stage0/c4_data/data_checks_2015-2018.csv`（d0caa1f68f340f8e）
+- `stage0/c4_data/data_checks_2019-2023.csv`（c577dfd5d35453ac）
+- `stage0/c4_data/data_checks_2024-2026.csv`（3aeec8cb4a9b661e）
+- `stage0/c4_data/state_checks.csv`（1407fedbaf2e19f8）
+- `stage0/c4_data/state_unknown_days.csv`（500bbd699b39f1b2）
+- `stage0/c5_random/random_checks.csv`（eda4b4d3d0370343）
+- `stage0/c5_random_rerun/random_checks.csv`（4fb9098c9992c690）
+- `stage0/c6_output/fast_identity.csv`（f998c575699d70f2）
+- `stage0/c6_output/fast_timing_P16.csv`（5ddca7331bc9ea53）
+- `stage0/c6_output/output_checks.csv`（9e3bf9dd958c1f87）
+- `stage0/c6_output/profile.csv`（65349407f456a6da）
+- `stage0/c6_output/timing_extrapolation.json`（a5407ce2e2c5a464）
+- `stage0/c6_output_rerun/output_checks.csv`（c5fa12bc68da8d40）
+- `stage0/c6_output_rerun/profile.csv`（65349407f456a6da）
+- `stage0/c6_output_rerun/timing_extrapolation.json`（a5407ce2e2c5a464）
+- `stage0/local_exec_briefs_hashes.json`（416598ac53e75baa）
+- `stage0/plan_tests/out/audit_control_manifest.json`（52bbf05bdebe9730）
+- `stage0/plan_tests/out/comparison_manifest.json`（95027d37a9ed7afd）
+- `stage0/plan_tests/out/design_manifest.json`（43fa6e9ab3186db8）
+- `stage0/plan_tests/out/memory_random_manifest.json`（99e55a7415792978）
+- `stage0/plan_tests/out/policy_content_manifest.json`（3bedf6da43782c9b）
+- `stage0/plan_tests/out/results.json`（c0958d7065751138）
+- `stage0/plan_tests/out/support_manifest.json`（7bf69a4f2d5c79df）
+
+## Stage A
+- `results/stage_a/a1_auto_pre_E6l.csv`（a72b3b65f835805e）
+- `results/stage_a/a1_auto_pre_E6l_rerun2.csv`（6fe254c5c633ca7d）
+- `results/stage_a/a1_auto_pre_E6l_rerun3.csv`（ea6890fda85a4f8c）
+- `results/stage_a/a2_7_vs_e6k_deriv.csv`（6ea852059ea1ff80）
+- `results/stage_a/a2_7_vs_e6k_post.csv`（95671a9d883d701d）
+- `results/stage_a/calibration_deriv_E6l.csv`（10ee6aa5d14d95db）
+- `results/stage_a/calibration_post_E6l.csv`（cc55bb11c01411cc）
+- `results/stage_a/mask_facts_deriv_E6l.csv`（4d4f8c298d033044）
+- `results/stage_a/mask_facts_post_E6l.csv`（a3d8d37c2f5023fc）
+- `results/stage_a/measure_facts_deriv_E6l.csv`（86ea3e889a67528d）
+- `results/stage_a/measure_facts_post_E6l.csv`（129331a945516dff）
+- `results/stage_a/rmark_partition_deriv_E6l.csv`（180f81d5481b863c）
+- `results/stage_a/rmark_partition_post_E6l.csv`（edb219432c9757d6）
+- `results/stage_a/state_days_deriv_E6l.csv`（bc2198f1693615d2）
+- `results/stage_a/state_days_post_E6l.csv`（dec6a0ee2e4684b5）
+
+## 结果与诊断
+- `diagnostics/risk/2010-2014_smb.csv`（d2da983630c21870）
+- `diagnostics/risk/2010-2014_tails.csv`（72a5ab453453e5a7）
+- `diagnostics/risk/2015-2018_smb.csv`（e28400b820435027）
+- `diagnostics/risk/2015-2018_tails.csv`（10128a879c7a6b08）
+- `diagnostics/risk/2019-2023_smb.csv`（44120d3d04a99b90）
+- `diagnostics/risk/2019-2023_tails.csv`（77f5bfdaea7361a1）
+- `diagnostics/risk/2024-2026_smb.csv`（ac9edc7dae1e8735）
+- `diagnostics/risk/2024-2026_tails.csv`（01ba6acea7fd8a64）
+- `diagnostics/shadow/2010-2014.csv`（99d0102461c35c20）
+- `diagnostics/shadow/2015-2018.csv`（fa45d1b9321aef93）
+- `diagnostics/shadow/2019-2023.csv`（149a3c77f8be826b）
+- `diagnostics/shadow/2024-2026.csv`（71fd20714cec7d3a）
+- `results/deriv/cards_t13_deriv_E6l.csv`（4e3a46e53c51baeb）
+- `results/deriv/comparison_stats_2010-2014.csv`（4f16dd638e173280）
+- `results/deriv/comparison_stats_2015-2018.csv`（8f80ac392c22ce37）
+- `results/deriv/comparison_stats_deriv_merged.csv`（f981fe6b22c8516d）
+- `results/deriv/descriptor_stats_2010-2014.csv`（c08dd0bf18d86612）
+- `results/deriv/descriptor_stats_2015-2018.csv`（20f869d67841258a）
+- `results/deriv/descriptor_stats_deriv_merged.csv`（1261735d59a91f19）
+- `results/deriv/mc_plan_2010-2014_150600.csv`（5a3380640b367481）
+- `results/deriv/mc_plan_2010-2014_151020.csv`（5a3380640b367481）
+- `results/deriv/mc_plan_2015-2018_151019.csv`（a9fb854d6685963b）
+- `results/deriv/paired_mde80_deriv.csv`（f45ff194a13d4d6e）
+- `results/deriv/random_refs_2010-2014.csv`（f877ed16570bec17）
+- `results/deriv/random_refs_2015-2018.csv`（2cdcfa89d1e8f172）
+- `results/deriv/random_refs_deriv_merged.csv`（6a50eabdf2b11a6b）
+- `results/full/E6L_Q01_a.csv`（68019a4dd243aa1d）
+- `results/full/E6L_Q01_b.csv`（bb9d2e6bb2d1c86f）
+- `results/full/E6L_Q01_c.csv`（c366dacb463a3235）
+- `results/full/E6L_Q02_a.csv`（e982cfc2b33bd13a）
+- `results/full/E6L_Q02_b.csv`（ec49b5a8f6cd373e）
+- `results/full/E6L_Q03_a.csv`（2fe24b626d8dbb0b）
+- `results/full/E6L_Q03_b.csv`（1d479de919a560f1）
+- `results/full/E6L_Q04_a.csv`（d88c97977a36c8cf）
+- `results/full/E6L_Q04_b.csv`（972bbcaf2c4d1347）
+- `results/full/E6L_Q05_a.csv`（16318670db7e4d2a）
+- `results/full/E6L_Q05_b.csv`（aa1807dc77d1db05）
+- `results/full/E6L_Q06_a.csv`（65d0a928062755b5）
+- `results/full/E6L_Q06_b.csv`（68ee60e608843d96）
+- `results/full/E6L_Q07_a.csv`（b4dbdaf306d39ce3）
+- `results/full/E6L_Q07_b.csv`（481906521daed449）
+- `results/full/E6L_Q08_a.csv`（5e0362337989f227）
+- `results/full/E6L_Q08_b.csv`（17439716b6ed5f2f）
+- `results/full/E6L_Q09_a.csv`（f86a994521766f40）
+- `results/full/E6L_Q10_a.csv`（7de164ea17c7f7c8）
+- `results/full/E6L_Q10_b.csv`（6d37e4693d879b1f）
+- `results/full/E6L_Q11_a.csv`（5d77a6ee2e3ea1c9）
+- `results/full/E6L_Q12_a.csv`（9927cc351ff48f53）
+- `results/full/E6L_Q12_b.csv`（cffeb8403fbc34ec）
+- `results/full/E6L_Q13_a.csv`（ab1d3cdfc0629e48）
+- `results/full/E6L_Q13_b.csv`（c59fbdb8a6027310）
+- `results/full/E6L_Q14_a.csv`（bedc93d4b62504ad）
+- `results/full/E6L_Q15_a.csv`（026c15ab7d6cb0f4）
+- `results/full/E6L_Q16_a.csv`（509c02943ffdc394）
+- `results/full/bootstrap/bootstrap_comparisons.csv`（f95437bcafd6eea1）
+- `results/full/bootstrap/simultaneous_band_q95.csv`（aefbba26a4ec847b）
+- `results/full/candidate72.csv`（5c65a2c83bdfa50d）
+- `results/full/comparison_manifest.csv`（00a284d6ef571280）
+- `results/full/comparison_stats_2010-2014.csv`（4f16dd638e173280）
+- `results/full/comparison_stats_2015-2018.csv`（8f80ac392c22ce37）
+- `results/full/comparison_stats_2019-2023.csv`（05f17e764f67b47a）
+- `results/full/comparison_stats_2024-2026.csv`（4e05d4afb2c14ae0）
+- `results/full/completion_coverage.csv`（319830bf01aa2ec6）
+- `results/full/continuous/boundary_facts.csv`（40936c02080574e1）
+- `results/full/continuous/continuous_panel.csv`（f7f3ab5e23366f6e）
+- `results/full/descriptor_stats_2010-2014.csv`（c08dd0bf18d86612）
+- `results/full/descriptor_stats_2015-2018.csv`（20f869d67841258a）
+- `results/full/descriptor_stats_2019-2023.csv`（771895f274e26992）
+- `results/full/descriptor_stats_2024-2026.csv`（8558cd1a82b0643f）
+- `results/full/dose72.csv`（2495204432db6d1a）
+- `results/full/frontier_dose_tilt.csv`（58e304adf80d5330）
+- `results/full/hypothesis_lineage.csv`（07d654fd2877ccba）
+- `results/full/inventory_saturation.csv`（ad5cf99c55d9d875）
+- `results/full/kernel_contracts.csv`（185151590f259c2a）
+- `results/full/mc_precision.csv`（0a8bfebdcf765627）
+- `results/full/membership_age_ledger.csv`（7748f9378307b4fd）
+- `results/full/memory_age/2010-2014_ages.csv`（eab00d7f4bed3a15）
+- `results/full/memory_age/2010-2014_daily.csv`（a92ddd88d961af12）
+- `results/full/memory_age/2015-2018_ages.csv`（7e65c8eba7d89543）
+- `results/full/memory_age/2015-2018_daily.csv`（d0b232785dad1ce2）
+- `results/full/memory_age/2019-2023_ages.csv`（bf00f4be0c97e59b）
+- `results/full/memory_age/2019-2023_daily.csv`（2d94fc2d251675a5）
+- `results/full/memory_age/2024-2026_ages.csv`（a65a4e4bbdc2458b）
+- `results/full/memory_age/2024-2026_daily.csv`（67e6247f615778a0）
+- `results/full/memory_age_daily.csv`（dd9ee144e8819dc5）
+- `results/full/memory_contracts.csv`（4f4b60cd66808a1e）
+- `results/full/paired_mde80_deriv.csv`（f45ff194a13d4d6e）
+- `results/full/policy_E6l.csv`（20bb0f85da6bd0ec）
+- `results/full/policy_additions_E6l.csv`（67fd5522019278ed）
+- `results/full/policy_profiles.csv`（5745a0dd8b6eeb6d）
+- `results/full/query_tables/E6L_CA_A24.csv`（6e2e61754838ea6a）
+- `results/full/query_tables/E6L_CA_HGONLY.csv`（b2cb27cf1056226d）
+- `results/full/query_tables/E6L_CA_HPROFILE.csv`（55c9e739de1e9ce8）
+- `results/full/query_tables/E6L_CA_W08.csv`（de35ce0858477332）
+- `results/full/query_tables/E6L_CD_FACTS_1.csv`（deaf5bbcf4b53424）
+- `results/full/query_tables/E6L_CD_Q01_1.csv`（c63793ff141fe3f3）
+- `results/full/query_tables/E6L_CD_Q01_2.csv`（d49491e063b1a836）
+- `results/full/query_tables/E6L_CD_Q02_1.csv`（675f0184228c23a9）
+- `results/full/query_tables/E6L_CD_Q02_2.csv`（0a427630e31956e3）
+- `results/full/query_tables/E6L_CD_Q02_3.csv`（8f0b9c105e28575f）
+- `results/full/query_tables/E6L_CD_Q02_4.csv`（fe990841551ac728）
+- `results/full/query_tables/E6L_CD_Q03_1.csv`（86aeed3d2879549a）
+- `results/full/query_tables/E6L_CD_Q03_2.csv`（0a7abb7470930288）
+- `results/full/query_tables/E6L_CD_Q03_3.csv`（96857d94f512087d）
+- `results/full/query_tables/E6L_CD_Q03_4.csv`（bb6a7071e5b9d6b6）
+- `results/full/query_tables/E6L_CD_Q03_5.csv`（f182b86c226cf74b）
+- `results/full/query_tables/E6L_CD_Q04_1.csv`（0c32288f1ade3206）
+- `results/full/query_tables/E6L_CD_Q04_2.csv`（b88c24c3352a172b）
+- `results/full/query_tables/E6L_CD_Q05_1.csv`（370d0700aa7b94dd）
+- `results/full/query_tables/E6L_CD_Q05_2.csv`（ec6d13af10d2d6af）
+- `results/full/query_tables/E6L_CD_Q05_3.csv`（8082e030305ae642）
+- `results/full/query_tables/E6L_CD_Q06_1.csv`（fe915bdfbce3e4fc）
+- `results/full/query_tables/E6L_CD_Q06_2.csv`（2a0f264b247bdb15）
+- `results/full/query_tables/E6L_CD_Q06_3.csv`（ae3b09fb22d4a3d4）
+- `results/full/query_tables/E6L_CD_Q07_1.csv`（919424271f2b5f6d）
+- `results/full/query_tables/E6L_CD_Q08_1.csv`（9329c53ddc4b4cd1）
+- `results/full/query_tables/E6L_CD_Q08_2.csv`（22c0950e3bcf9ad0）
+- `results/full/query_tables/E6L_CD_Q08_3.csv`（cbe2a2aff93ee5a6）
+- `results/full/query_tables/E6L_CD_Q08_4.csv`（4ef7e8d2d374d7fb）
+- `results/full/query_tables/E6L_CD_Q09_1.csv`（872da05183f6d850）
+- `results/full/query_tables/E6L_CD_Q09_2.csv`（1c7f6fa532f91141）
+- `results/full/query_tables/E6L_CD_Q10_1.csv`（dd02c6e5c6613a40）
+- `results/full/query_tables/E6L_CD_Q10_2.csv`（98f51c78103ab249）
+- `results/full/query_tables/E6L_CD_Q11_1.csv`（f72e4c36da4a328c）
+- `results/full/query_tables/E6L_CD_Q11_2.csv`（e85ee6e78f2d91f2）
+- `results/full/query_tables/E6L_CD_Q12_1.csv`（e6907d5e38411bb7）
+- `results/full/query_tables/E6L_CD_Q12_2.csv`（01ba4719c80b6fe9）
+- `results/full/query_tables/E6L_CD_Q13_1.csv`（9cb0e7fb40c80ea0）
+- `results/full/query_tables/E6L_CD_Q13_2.csv`（8bd5929a0629b10f）
+- `results/full/query_tables/E6L_CD_Q13_3.csv`（1a6cd76e421f3cf7）
+- `results/full/query_tables/E6L_CD_Q13_4.csv`（9c5d5b9ec62b1d1b）
+- `results/full/query_tables/E6L_CD_Q14_1.csv`（f8a525cf068d4125）
+- `results/full/query_tables/E6L_CD_Q14_2.csv`（7f2fb4e53934743e）
+- `results/full/query_tables/E6L_CD_Q15_1.csv`（5d2613ac8e5c8d05）
+- `results/full/query_tables/E6L_CD_Q15_2.csv`（21bd143d41462629）
+- `results/full/query_tables/E6L_MX_BAND.csv`（b16579305453e2be）
+- `results/full/query_tables/E6L_MX_CONT.csv`（53f033d8fd5bff16）
+- `results/full/query_tables/E6L_MX_FOUR_ACCOUNT_INFO_RULE.csv`（002c8531c9311931）
+- `results/full/query_tables/E6L_MX_FOUR_ACCOUNT_SMOOTH_RULE.csv`（1572a138fa1151bc）
+- `results/full/query_tables/E6L_MX_INV_CAP_LOOP.csv`（389072e07382566a）
+- `results/full/query_tables/E6L_MX_KERNEL_DOSE.csv`（ad53f7eb9fe7fba2）
+- `results/full/query_tables/E6L_MX_MASKQ0_CONTENT.csv`（20566eea53c5634d）
+- `results/full/query_tables/E6L_MX_MASKQ0_SUPPORT_ONLY.csv`（5c890f2cc214d075）
+- `results/full/query_tables/E6L_MX_MATCH_CAP_FIXED_PATH.csv`（c9f6afe1e97798e2）
+- `results/full/query_tables/E6L_MX_MA_VS_EW.csv`（42d6dedeb8ff8048）
+- `results/full/query_tables/E6L_MX_MEAN_KERNEL_PAIR.csv`（4496a1a4a7f944fe）
+- `results/full/query_tables/E6L_MX_MECHANISM_PAIR.csv`（7d3376f0e0fdd1fc）
+- `results/full/query_tables/E6L_MX_RANK_BRIDGE_PAIR.csv`（553ed9dfafc9e1bd）
+- `results/full/query_tables/E6L_MX_REAL_MINUS_COND.csv`（93e59abac5016f9f）
+- `results/full/query_tables/E6L_MX_REAL_MINUS_LEGACY.csv`（5ece499360755a54）
+- `results/full/query_tables/E6L_MX_REAL_MINUS_RMARK.csv`（2fc05df4909bc107）
+- `results/full/query_tables/E6L_MX_SMN_PAIR.csv`（81e91da92181168c）
+- `results/full/query_tables/E6L_MX_STRESS.csv`（36efa92dfcc40dd5）
+- `results/full/query_tables/E6L_MX_STRICT250_VS_MAIN.csv`（ae6d1ca3f0ec41f1）
+- `results/full/query_tables/E6L_MX_SUPPORT_BRIDGE_CHILD_SUPPORT.csv`（99a2e420c8abaec3）
+- `results/full/query_tables/E6L_MX_SUPPORT_BRIDGE_CONTENT.csv`（abcaa28dcf8a11f8）
+- `results/full/query_tables/E6L_MX_SUPPORT_BRIDGE_PARENT_SUPPORT.csv`（dbcb8cf07f16ef27）
+- `results/full/query_tables/E6L_MX_SYMDEC.csv`（c8cc20d224b61975）
+- `results/full/query_tables/E6L_MX_WINDOW_PAIR.csv`（45b010c441b751e0）
+- `results/full/query_tables/E6L_P1_72_Q0_DECAY5_10.csv`（dcd78233d9aa5087）
+- `results/full/query_tables/E6L_P1_72_Q0_HG10.csv`（e18fd9a4375eb204）
+- `results/full/query_tables/E6L_P1_72_Q0_INV10.csv`（51ad05c4de81de03）
+- `results/full/query_tables/E6L_P1_72_Q0_LAG1_10.csv`（d1ccb435ffcc759e）
+- `results/full/query_tables/E6L_P1_72_Q0_NATIVE.csv`（9a1b90128401e0bf）
+- `results/full/query_tables/E6L_P1_72_Q_D3_NATIVE.csv`（bcdc0ce0ba1af555）
+- `results/full/query_tables/E6L_P1_72_Q_D5_HG10.csv`（17f7f4b6879bb1ce）
+- `results/full/query_tables/E6L_P1_72_Q_D5_NATIVE.csv`（a9dfbfc3cebe451a）
+- `results/full/query_tables/E6L_P1_72_Q_DEW5_HG10.csv`（ccc786a3a1300b4f）
+- `results/full/query_tables/E6L_P1_72_Q_DEW5_NATIVE.csv`（3157f084f5850b3f）
+- `results/full/query_tables/E6L_P1_72_Q_RANK5_HG10.csv`（f3a552604e12cb19）
+- `results/full/query_tables/E6L_P1_72_Q_RANK5_NATIVE.csv`（4541225cddc6f174）
+- `results/full/query_tables/E6L_P1_CARDS.csv`（7832514fff300de7）
+- `results/full/query_tables/E6L_P1_CS_CONTENT.csv`（1907a179139f4bc5）
+- `results/full/query_tables/E6L_P1_CS_CSUP.csv`（fe3021a369d75079）
+- `results/full/query_tables/E6L_P1_CS_PSUP.csv`（7a9d215a8dc1af73）
+- `results/full/query_tables/E6L_P1_DOSE72.csv`（67726f5e646493b3）
+- `results/full/query_tables/E6L_P1_GRID.csv`（0cfc73ba7bfe17ba）
+- `results/full/query_tables/E6L_P1_INFO_RULE.csv`（96243021290a582d）
+- `results/full/query_tables/E6L_P1_INVLOOP.csv`（ddb7fa8aaef64b84）
+- `results/full/query_tables/E6L_P1_KDOSE.csv`（ab47ec473d5296c3）
+- `results/full/query_tables/E6L_P1_MAEW.csv`（9b425b3f43c5890c）
+- `results/full/query_tables/E6L_P1_MEANK.csv`（9c3baabc83c4e4c2）
+- `results/full/query_tables/E6L_P1_MECHPAIR.csv`（fb3fa41057a5bf9c）
+- `results/full/query_tables/E6L_P1_MQ0_CONTENT.csv`（fc1d46adc85732b8）
+- `results/full/query_tables/E6L_P1_MQ0_SUP.csv`（11d53009b06b7996）
+- `results/full/query_tables/E6L_P1_NBHD72.csv`（1d330393298aaabc）
+- `results/full/query_tables/E6L_P1_RAND.csv`（def4748200eef26d）
+- `results/full/query_tables/E6L_P1_RANKB.csv`（bf14cbc5b73c47fc）
+- `results/full/query_tables/E6L_P1_RMARK.csv`（d93a0a2563b24311）
+- `results/full/query_tables/E6L_P1_S250.csv`（770469d916ebc269）
+- `results/full/query_tables/E6L_P1_SMOOTH_RULE.csv`（cf794604b55d1dc9）
+- `results/full/query_tables/E6L_P1_STAGEA.csv`（6b5538b8318552f1）
+- `results/full/query_tables/E6L_P1_T13.csv`（ba5113224ea17b45）
+- `results/full/query_tables/E6L_P1_WINDOW.csv`（6207aecf9afae4f5）
+- `results/full/query_tables/E6L_P2_72_Q0_DECAY5_10.csv`（b7b2f564f238cc2d）
+- `results/full/query_tables/E6L_P2_72_Q0_HG10.csv`（4e415aaf073c7235）
+- `results/full/query_tables/E6L_P2_72_Q0_INV10.csv`（4ec8251d73c6a8d7）
+- `results/full/query_tables/E6L_P2_72_Q0_LAG1_10.csv`（312463ff76183af2）
+- `results/full/query_tables/E6L_P2_72_Q0_NATIVE.csv`（4333fa798bb763d8）
+- `results/full/query_tables/E6L_P2_72_Q_D3_NATIVE.csv`（825853c434eb49db）
+- `results/full/query_tables/E6L_P2_72_Q_D5_HG10.csv`（2dece9e0160350e1）
+- `results/full/query_tables/E6L_P2_72_Q_D5_NATIVE.csv`（72346394783dae36）
+- `results/full/query_tables/E6L_P2_72_Q_DEW5_HG10.csv`（c12805477b667aa2）
+- `results/full/query_tables/E6L_P2_72_Q_DEW5_NATIVE.csv`（440148b813375e75）
+- `results/full/query_tables/E6L_P2_72_Q_RANK5_HG10.csv`（7d1cbc136b1a62e0）
+- `results/full/query_tables/E6L_P2_72_Q_RANK5_NATIVE.csv`（fa0eb13e71e66ce5）
+- `results/full/query_tables/E6L_P2_DOSE72.csv`（736ad87b6bf5476d）
+- `results/full/query_tables/E6L_P2_EXPO.csv`（01189486fa361139）
+- `results/full/query_tables/E6L_P2_GRID.csv`（2f6f09e2428523ae）
+- `results/full/query_tables/E6L_P2_NBHD72.csv`（9d1e7ac10207d99d）
+- `results/full/query_tables/E6L_P3_ADDITIONS.csv`（67fd5522019278ed）
+- `results/full/query_tables/E6L_P3_CANDIDATES.csv`（2cab5f14b5196ed1）
+- `results/full/query_tables/E6L_P3_COUNTS.csv`（4656e90fcc08ef9a）
+- `results/full/query_tables/E6L_P3_DOSE72.csv`（b3254ec1db341f6c）
+- `results/full/query_tables/E6L_P3_EDGE.csv`（2a048298bf92cc90）
+- `results/full/query_tables/E6L_P3_NBHD72.csv`（c78e7905661aaa34）
+- `results/full/query_tables/E6L_P3_PRIMARY72.csv`（468edf4777ac8b65）
+- `results/full/query_tables/E6L_Q01_a.csv`（68019a4dd243aa1d）
+- `results/full/query_tables/E6L_Q01_b.csv`（bb9d2e6bb2d1c86f）
+- `results/full/query_tables/E6L_Q01_c.csv`（c366dacb463a3235）
+- `results/full/query_tables/E6L_Q02_a.csv`（e982cfc2b33bd13a）
+- `results/full/query_tables/E6L_Q02_b.csv`（ec49b5a8f6cd373e）
+- `results/full/query_tables/E6L_Q03_a.csv`（2fe24b626d8dbb0b）
+- `results/full/query_tables/E6L_Q03_b.csv`（1d479de919a560f1）
+- `results/full/query_tables/E6L_Q04_a.csv`（d88c97977a36c8cf）
+- `results/full/query_tables/E6L_Q04_b.csv`（972bbcaf2c4d1347）
+- `results/full/query_tables/E6L_Q05_a.csv`（16318670db7e4d2a）
+- `results/full/query_tables/E6L_Q05_b.csv`（aa1807dc77d1db05）
+- `results/full/query_tables/E6L_Q06_a.csv`（65d0a928062755b5）
+- `results/full/query_tables/E6L_Q06_b.csv`（68ee60e608843d96）
+- `results/full/query_tables/E6L_Q07_a.csv`（b4dbdaf306d39ce3）
+- `results/full/query_tables/E6L_Q07_b.csv`（481906521daed449）
+- `results/full/query_tables/E6L_Q08_a.csv`（5e0362337989f227）
+- `results/full/query_tables/E6L_Q08_b.csv`（17439716b6ed5f2f）
+- `results/full/query_tables/E6L_Q09_a.csv`（f86a994521766f40）
+- `results/full/query_tables/E6L_Q10_a.csv`（7de164ea17c7f7c8）
+- `results/full/query_tables/E6L_Q10_b.csv`（6d37e4693d879b1f）
+- `results/full/query_tables/E6L_Q11_a.csv`（5d77a6ee2e3ea1c9）
+- `results/full/query_tables/E6L_Q12_a.csv`（9927cc351ff48f53）
+- `results/full/query_tables/E6L_Q12_b.csv`（cffeb8403fbc34ec）
+- `results/full/query_tables/E6L_Q13_a.csv`（ab1d3cdfc0629e48）
+- `results/full/query_tables/E6L_Q13_b.csv`（c59fbdb8a6027310）
+- `results/full/query_tables/E6L_Q14_a.csv`（bedc93d4b62504ad）
+- `results/full/query_tables/E6L_Q15_a.csv`（026c15ab7d6cb0f4）
+- `results/full/query_tables/E6L_Q16_a.csv`（509c02943ffdc394）
+- `results/full/query_tables/E6L_R0_A0.csv`（f7fb2fcdb5e917b0）
+- `results/full/query_tables/E6L_R0_A27_DERIV.csv`（0742259bef39835f）
+- `results/full/query_tables/E6L_R0_A27_POST.csv`（f8a05638bf7fd02a）
+- `results/full/query_tables/E6L_R0_AUTH.csv`（64047c7e97d4e9b4）
+- `results/full/query_tables/E6L_R0_CAL_DERIV.csv`（a03d22d8d167c982）
+- `results/full/query_tables/E6L_R0_CAL_POST.csv`（a19b6d4fc5903621）
+- `results/full/query_tables/E6L_R0_DOCS.csv`（aff03ef738f5cd0d）
+- `results/full/query_tables/E6L_R0_ENV.csv`（652db62dce18da40）
+- `results/full/query_tables/E6L_R0_GEN.csv`（fb6692482c1f5927）
+- `results/full/query_tables/E6L_R0_MC.csv`（b1ce540ee657b335）
+- `results/full/query_tables/E6L_R0_RMARKPART_DERIV.csv`（180f81d5481b863c）
+- `results/full/query_tables/E6L_R0_RMARKPART_POST.csv`（edb219432c9757d6）
+- `results/full/query_tables/E6L_R0_STAGE0.csv`（c8f324ba4334fc7d）
+- `results/full/query_tables/E6L_R0_STAGE0_COUNTS.csv`（bbeb4ec75f34a147）
+- `results/full/query_tables/E6L_R0_STATE_DERIV.csv`（d64700e475bdb918）
+- `results/full/query_tables/E6L_R0_STATE_POST.csv`（190d5eeebcbeb6e2）
+- `results/full/query_tables/E6L_R0_TIMING.csv`（d44fe3ec8a857704）
+- `results/full/query_tables/E6L_R0_UNKNOWN.csv`（500bbd699b39f1b2）
+- `results/full/random_refs.csv`（21d1038c91f3ff96）
+- `results/full/random_refs_2010-2014.csv`（f877ed16570bec17）
+- `results/full/random_refs_2015-2018.csv`（2cdcfa89d1e8f172）
+- `results/full/random_refs_2019-2023.csv`（745155024bfaef37）
+- `results/full/random_refs_2024-2026.csv`（01da8069705bca55）
+- `results/full/risk_tight_bounds.csv`（0ceda469e6876e04）
+- `results/full/source_lineage.csv`（58587fc05845bba2）
+- `results/full/state_clock/2010-2014_calendar_trading.csv`（0ed651b4615c7d75）
+- `results/full/state_clock/2010-2014_formation.csv`（8a927f2a3d6dbcd9）
+- `results/full/state_clock/2010-2014_stress.csv`（ac5187077bf67319）
+- `results/full/state_clock/2010-2014_strict250.csv`（83a0e777b660af38）
+- `results/full/state_clock/2015-2018_calendar_trading.csv`（fb37e80ba25b4bb7）
+- `results/full/state_clock/2015-2018_formation.csv`（75eba2504eff6fde）
+- `results/full/state_clock/2015-2018_stress.csv`（6c005e68aa34b27c）
+- `results/full/state_clock/2015-2018_strict250.csv`（8b95d5dc6cb2aad1）
+- `results/full/state_clock/2019-2023_calendar_trading.csv`（c644db675fb597c9）
+- `results/full/state_clock/2019-2023_formation.csv`（e9047d99f9e799fb）
+- `results/full/state_clock/2019-2023_stress.csv`（0f028df10f9fe666）
+- `results/full/state_clock/2019-2023_strict250.csv`（ac08ce9ad71f8f1b）
+- `results/full/state_clock/2024-2026_calendar_trading.csv`（b37c0d2adfa0700a）
+- `results/full/state_clock/2024-2026_formation.csv`（5d0cb38a8814030e）
+- `results/full/state_clock/2024-2026_stress.csv`（d8e2e1144adf0b38）
+- `results/full/state_clock/2024-2026_strict250.csv`（a4f5e7bb7a53865b）
+- `results/full/state_clock_ledger.csv`（3ecc795d1131b1df）
+- `results/full/state_symmetric_decomposition.csv`（833d24c626f29aaf）
+- `results/full/state_unknown_days.csv`（500bbd699b39f1b2）
+- `results/full/turn_cost_frontier.csv`（e7cf4167b774a8ce）
+
+## 代码（47 code/project_core）
+- `code/e6l_a0.py`（a499547b4b488968）
+- `code/e6l_a1_auto.py`（a838529917330d94）
+- `code/e6l_boot.py`（98228eb5757e7405）
+- `code/e6l_bootstrap.py`（c2c9d77dd386bf92）
+- `code/e6l_cmpstats.py`（c522d22facb77085）
+- `code/e6l_code_register.py`（7c3ad53e0a4316b5）
+- `code/e6l_continuous.py`（be6f40042e1bd827）
+- `code/e6l_core.py`（edc24f96165aa2e2）
+- `code/e6l_deliver.py`（be4c9f6922b4c599）
+- `code/e6l_env.py`（3adbcf7bdb3e8924）
+- `code/e6l_fast.py`（95de6567ac412023）
+- `code/e6l_fixed_tables.py`（3fa19b532c55d5e1）
+- `code/e6l_mde80.py`（1101e854438cfdaa）
+- `code/e6l_ops.py`（eb1afba9f3978a87）
+- `code/e6l_policy.py`（0edc33edb999adb0）
+- `code/e6l_prereg.py`（6c4785033919f77b）
+- `code/e6l_record_b.py`（a948965ac80105d3）
+- `code/e6l_registry.py`（55ad05296f7adc30）
+- `code/e6l_report.py`（311896d1f4a5f9fd）
+- `code/e6l_report_part1.py`（d94cbef41842e186）
+- `code/e6l_reports.py`（df258ef6c78ec541）
+- `code/e6l_run.sh`（917870cea8cf59b7）
+- `code/e6l_run_det.py`（4fa53a1ea1cc3f70）
+- `code/e6l_run_rand.py`（a0e8d0d1bdc8a4f7）
+- `code/e6l_seal.py`（142482f08a6dc5c1）
+- `code/e6l_shadow_risk.py`（a519da5b0cd57f36）
+- `code/e6l_stage0_close.py`（bd88136e1a82c969）
+- `code/e6l_stage0_data.py`（5d8dc0ce977a4e40）
+- `code/e6l_stage0_identity.py`（24127d5d6ac45f06）
+- `code/e6l_stage0_ops.py`（224302cca5130b13）
+- `code/e6l_stage0_output.py`（e806360969efa84d）
+- `code/e6l_stage0_random.py`（8e9fe03d2065ef46）
+- `code/e6l_stage0_source.py`（2d9c6542f6709c4a）
+- `code/e6l_stage_a.py`（dc15a7dd418f6dec）
+- `code/e6l_state.py`（7f9d5467caa6fa9b）
+- `code/e6l_state_clock.py`（f65a9faec96e210c）
+- `code/e6l_stats.py`（e5831d8d2440aca9）
+- `code/e6l_topup.py`（b786b74205f7088c）
+
+## 输入副本
+- `00_协议_copy.md`（f685e538dd6c5a27）
+- `E6k_REPORT_supplement_1_copy.md`（8b6dedc92c12c807）
+- `E6k_REVIEW_copy.md`（8ef42f86b7cb6984）
+- `E6k_RULING_copy.md`（b0a87798a896dfab）
+- `E6k_VERIFY_report_copy.md`（7281cd63e95c92ef）
+- `E6k_code_change_register_copy.md`（fd822bcb660e9582）
+- `E6l_proposal_copy.md`（f79c523a98ccf3c4）
+- `PLAN_COPY.md`（e7385cb784df6818）
+- `REVIEW_protocol_copy.md`（0b15019e0867a7a0）
+- `brief_appendix_copy.md`（f5c33bc783418ffb）
+- `brief_copy.md`（4c55fb4b051954b6）
+- `engine_contract.md`（a08038ed27f6ed19）
+- `source_resolution.md`（be7b5770a5a38580）
+
+## query_id 登记（173 个；跨文件唯一）
+- E6L-CA-A24 → E6l_REPORT_carried.md
+- E6L-CA-HGONLY → E6l_REPORT_carried.md
+- E6L-CA-HPROFILE → E6l_REPORT_carried.md
+- E6L-CA-W08 → E6l_REPORT_carried.md
+- E6L-CD-FACTS-1 → E6l_REPORT_cards.md
+- E6L-CD-Q01-1 → E6l_REPORT_cards.md
+- E6L-CD-Q01-2 → E6l_REPORT_cards.md
+- E6L-CD-Q02-1 → E6l_REPORT_cards.md
+- E6L-CD-Q02-2 → E6l_REPORT_cards.md
+- E6L-CD-Q02-3 → E6l_REPORT_cards.md
+- E6L-CD-Q02-4 → E6l_REPORT_cards.md
+- E6L-CD-Q03-1 → E6l_REPORT_cards.md
+- E6L-CD-Q03-2 → E6l_REPORT_cards.md
+- E6L-CD-Q03-3 → E6l_REPORT_cards.md
+- E6L-CD-Q03-4 → E6l_REPORT_cards.md
+- E6L-CD-Q03-5 → E6l_REPORT_cards.md
+- E6L-CD-Q04-1 → E6l_REPORT_cards.md
+- E6L-CD-Q04-2 → E6l_REPORT_cards.md
+- E6L-CD-Q05-1 → E6l_REPORT_cards.md
+- E6L-CD-Q05-2 → E6l_REPORT_cards.md
+- E6L-CD-Q05-3 → E6l_REPORT_cards.md
+- E6L-CD-Q06-1 → E6l_REPORT_cards.md
+- E6L-CD-Q06-2 → E6l_REPORT_cards.md
+- E6L-CD-Q06-3 → E6l_REPORT_cards.md
+- E6L-CD-Q07-1 → E6l_REPORT_cards.md
+- E6L-CD-Q08-1 → E6l_REPORT_cards.md
+- E6L-CD-Q08-2 → E6l_REPORT_cards.md
+- E6L-CD-Q08-3 → E6l_REPORT_cards.md
+- E6L-CD-Q08-4 → E6l_REPORT_cards.md
+- E6L-CD-Q09-1 → E6l_REPORT_cards.md
+- E6L-CD-Q09-2 → E6l_REPORT_cards.md
+- E6L-CD-Q10-1 → E6l_REPORT_cards.md
+- E6L-CD-Q10-2 → E6l_REPORT_cards.md
+- E6L-CD-Q11-1 → E6l_REPORT_cards.md
+- E6L-CD-Q11-2 → E6l_REPORT_cards.md
+- E6L-CD-Q12-1 → E6l_REPORT_cards.md
+- E6L-CD-Q12-2 → E6l_REPORT_cards.md
+- E6L-CD-Q13-1 → E6l_REPORT_cards.md
+- E6L-CD-Q13-2 → E6l_REPORT_cards.md
+- E6L-CD-Q13-3 → E6l_REPORT_cards.md
+- E6L-CD-Q13-4 → E6l_REPORT_cards.md
+- E6L-CD-Q14-1 → E6l_REPORT_cards.md
+- E6L-CD-Q14-2 → E6l_REPORT_cards.md
+- E6L-CD-Q15-1 → E6l_REPORT_cards.md
+- E6L-CD-Q15-2 → E6l_REPORT_cards.md
+- E6L-MX-BAND → E6l_REPORT_mechanisms.md
+- E6L-MX-CONT → E6l_REPORT_mechanisms.md
+- E6L-MX-FOUR-ACCOUNT-INFO-RULE → E6l_REPORT_mechanisms.md
+- E6L-MX-FOUR-ACCOUNT-SMOOTH-RULE → E6l_REPORT_mechanisms.md
+- E6L-MX-INV-CAP-LOOP → E6l_REPORT_mechanisms.md
+- E6L-MX-KERNEL-DOSE → E6l_REPORT_mechanisms.md
+- E6L-MX-MA-VS-EW → E6l_REPORT_mechanisms.md
+- E6L-MX-MASKQ0-CONTENT → E6l_REPORT_mechanisms.md
+- E6L-MX-MASKQ0-SUPPORT-ONLY → E6l_REPORT_mechanisms.md
+- E6L-MX-MATCH-CAP-FIXED-PATH → E6l_REPORT_mechanisms.md
+- E6L-MX-MEAN-KERNEL-PAIR → E6l_REPORT_mechanisms.md
+- E6L-MX-MECHANISM-PAIR → E6l_REPORT_mechanisms.md
+- E6L-MX-RANK-BRIDGE-PAIR → E6l_REPORT_mechanisms.md
+- E6L-MX-REAL-MINUS-COND → E6l_REPORT_mechanisms.md
+- E6L-MX-REAL-MINUS-LEGACY → E6l_REPORT_mechanisms.md
+- E6L-MX-REAL-MINUS-RMARK → E6l_REPORT_mechanisms.md
+- E6L-MX-SMN-PAIR → E6l_REPORT_mechanisms.md
+- E6L-MX-STRESS → E6l_REPORT_mechanisms.md
+- E6L-MX-STRICT250-VS-MAIN → E6l_REPORT_mechanisms.md
+- E6L-MX-SUPPORT-BRIDGE-CHILD-SUPPORT → E6l_REPORT_mechanisms.md
+- E6L-MX-SUPPORT-BRIDGE-CONTENT → E6l_REPORT_mechanisms.md
+- E6L-MX-SUPPORT-BRIDGE-PARENT-SUPPORT → E6l_REPORT_mechanisms.md
+- E6L-MX-SYMDEC → E6l_REPORT_mechanisms.md
+- E6L-MX-WINDOW-PAIR → E6l_REPORT_mechanisms.md
+- E6L-P1-72-Q0-DECAY5_10 → E6l_REPORT_part1.md
+- E6L-P1-72-Q0-HG10 → E6l_REPORT_part1.md
+- E6L-P1-72-Q0-INV10 → E6l_REPORT_part1.md
+- E6L-P1-72-Q0-LAG1_10 → E6l_REPORT_part1.md
+- E6L-P1-72-Q0-NATIVE → E6l_REPORT_part1.md
+- E6L-P1-72-Q_D3-NATIVE → E6l_REPORT_part1.md
+- E6L-P1-72-Q_D5-HG10 → E6l_REPORT_part1.md
+- E6L-P1-72-Q_D5-NATIVE → E6l_REPORT_part1.md
+- E6L-P1-72-Q_DEW5-HG10 → E6l_REPORT_part1.md
+- E6L-P1-72-Q_DEW5-NATIVE → E6l_REPORT_part1.md
+- E6L-P1-72-Q_RANK5-HG10 → E6l_REPORT_part1.md
+- E6L-P1-72-Q_RANK5-NATIVE → E6l_REPORT_part1.md
+- E6L-P1-CARDS → E6l_REPORT_part1.md
+- E6L-P1-CS-CONTENT → E6l_REPORT_part1.md
+- E6L-P1-CS-CSUP → E6l_REPORT_part1.md
+- E6L-P1-CS-PSUP → E6l_REPORT_part1.md
+- E6L-P1-DOSE72 → E6l_REPORT_part1.md
+- E6L-P1-GRID → E6l_REPORT_part1.md
+- E6L-P1-INFO-RULE → E6l_REPORT_part1.md
+- E6L-P1-INVLOOP → E6l_REPORT_part1.md
+- E6L-P1-KDOSE → E6l_REPORT_part1.md
+- E6L-P1-MAEW → E6l_REPORT_part1.md
+- E6L-P1-MEANK → E6l_REPORT_part1.md
+- E6L-P1-MECHPAIR → E6l_REPORT_part1.md
+- E6L-P1-MQ0-CONTENT → E6l_REPORT_part1.md
+- E6L-P1-MQ0-SUP → E6l_REPORT_part1.md
+- E6L-P1-NBHD72 → E6l_REPORT_part1.md
+- E6L-P1-RAND → E6l_REPORT_part1.md
+- E6L-P1-RANKB → E6l_REPORT_part1.md
+- E6L-P1-RMARK → E6l_REPORT_part1.md
+- E6L-P1-S250 → E6l_REPORT_part1.md
+- E6L-P1-SMOOTH-RULE → E6l_REPORT_part1.md
+- E6L-P1-STAGEA → E6l_REPORT_part1.md
+- E6L-P1-T13 → E6l_REPORT_part1.md
+- E6L-P1-WINDOW → E6l_REPORT_part1.md
+- E6L-P2-72-Q0-DECAY5_10 → E6l_REPORT_part2.md
+- E6L-P2-72-Q0-HG10 → E6l_REPORT_part2.md
+- E6L-P2-72-Q0-INV10 → E6l_REPORT_part2.md
+- E6L-P2-72-Q0-LAG1_10 → E6l_REPORT_part2.md
+- E6L-P2-72-Q0-NATIVE → E6l_REPORT_part2.md
+- E6L-P2-72-Q_D3-NATIVE → E6l_REPORT_part2.md
+- E6L-P2-72-Q_D5-HG10 → E6l_REPORT_part2.md
+- E6L-P2-72-Q_D5-NATIVE → E6l_REPORT_part2.md
+- E6L-P2-72-Q_DEW5-HG10 → E6l_REPORT_part2.md
+- E6L-P2-72-Q_DEW5-NATIVE → E6l_REPORT_part2.md
+- E6L-P2-72-Q_RANK5-HG10 → E6l_REPORT_part2.md
+- E6L-P2-72-Q_RANK5-NATIVE → E6l_REPORT_part2.md
+- E6L-P2-DOSE72 → E6l_REPORT_part2.md
+- E6L-P2-EXPO → E6l_REPORT_part2.md
+- E6L-P2-GRID → E6l_REPORT_part2.md
+- E6L-P2-NBHD72 → E6l_REPORT_part2.md
+- E6L-P3-ADDITIONS → E6l_REPORT_part3.md
+- E6L-P3-CANDIDATES → E6l_REPORT_part3.md
+- E6L-P3-COUNTS → E6l_REPORT_part3.md
+- E6L-P3-DOSE72 → E6l_REPORT_part3.md
+- E6L-P3-EDGE → E6l_REPORT_part3.md
+- E6L-P3-NBHD72 → E6l_REPORT_part3.md
+- E6L-P3-PRIMARY72 → E6l_REPORT_part3.md
+- E6L-Q01-a → E6l_REPORT_cards.md
+- E6L-Q01-b → E6l_REPORT_cards.md
+- E6L-Q01-c → E6l_REPORT_cards.md
+- E6L-Q02-a → E6l_REPORT_cards.md
+- E6L-Q02-b → E6l_REPORT_cards.md
+- E6L-Q03-a → E6l_REPORT_cards.md
+- E6L-Q03-b → E6l_REPORT_cards.md
+- E6L-Q04-a → E6l_REPORT_cards.md
+- E6L-Q04-b → E6l_REPORT_cards.md
+- E6L-Q05-a → E6l_REPORT_cards.md
+- E6L-Q05-b → E6l_REPORT_cards.md
+- E6L-Q06-a → E6l_REPORT_cards.md
+- E6L-Q06-b → E6l_REPORT_cards.md
+- E6L-Q07-a → E6l_REPORT_cards.md
+- E6L-Q07-b → E6l_REPORT_cards.md
+- E6L-Q08-a → E6l_REPORT_cards.md
+- E6L-Q08-b → E6l_REPORT_cards.md
+- E6L-Q09-a → E6l_REPORT_cards.md
+- E6L-Q10-a → E6l_REPORT_cards.md
+- E6L-Q10-b → E6l_REPORT_cards.md
+- E6L-Q11-a → E6l_REPORT_cards.md
+- E6L-Q12-a → E6l_REPORT_cards.md
+- E6L-Q12-b → E6l_REPORT_cards.md
+- E6L-Q13-a → E6l_REPORT_cards.md
+- E6L-Q13-b → E6l_REPORT_cards.md
+- E6L-Q14-a → E6l_REPORT_cards.md
+- E6L-Q15-a → E6l_REPORT_cards.md
+- E6L-Q16-a → E6l_REPORT_cards.md
+- E6L-R0-A0 → E6l_REPORT_R0.md
+- E6L-R0-A27-DERIV → E6l_REPORT_R0.md
+- E6L-R0-A27-POST → E6l_REPORT_R0.md
+- E6L-R0-AUTH → E6l_REPORT_R0.md
+- E6L-R0-CAL-DERIV → E6l_REPORT_R0.md
+- E6L-R0-CAL-POST → E6l_REPORT_R0.md
+- E6L-R0-DOCS → E6l_REPORT_R0.md
+- E6L-R0-ENV → E6l_REPORT_R0.md
+- E6L-R0-GEN → E6l_REPORT_R0.md
+- E6L-R0-MC → E6l_REPORT_R0.md
+- E6L-R0-RMARKPART-DERIV → E6l_REPORT_R0.md
+- E6L-R0-RMARKPART-POST → E6l_REPORT_R0.md
+- E6L-R0-STAGE0 → E6l_REPORT_R0.md
+- E6L-R0-STAGE0-COUNTS → E6l_REPORT_R0.md
+- E6L-R0-STATE-DERIV → E6l_REPORT_R0.md
+- E6L-R0-STATE-POST → E6l_REPORT_R0.md
+- E6L-R0-TIMING → E6l_REPORT_R0.md
+- E6L-R0-UNKNOWN → E6l_REPORT_R0.md
